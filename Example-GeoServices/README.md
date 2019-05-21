@@ -4,12 +4,12 @@ This project demonstrates how to use the z/OS client web enablement toolkit to o
 
 Geo Services is a published REST API that allows applications to find distances between two points on the map, and to get geographical information about a municipality and its zip codes, area codes, and latitude/longitude coordinates.
 
-## Format of the REST API request
-Like most servers, the Geo Services server, dictates how to communicate with it, [API Reference](http://geosvc.com/docs/Ref). For this example, we will be using the **Distance** REST API. If you click on the Distance topic it should expand and you'll see the following content:
+## Distance REST API format
+For this example, we will be using the **Distance** REST API defined by the  [http://geosvc.com/docs/Ref](http://geosvc.com/docs/Ref).
 
-![Geo Services main page] (images/image0.png)
+![Geo Services main page](images/image0.png)
 
-The main take away for this example are the following pieces:
+The example requires knowledge of the following pieces which you can gather from the reference:
  - **Uniform Resource Identifier (URI)**
  ```
  http://api.geosvc.com/rest/{COUNTRYCODE}/{REGION}/{CITY}/distance?apikey={APIKEY}&p={CITY2}&r={REGION2}&c={COUNTRYCODE2}
@@ -44,18 +44,18 @@ CITY2 - City name
 
  - Launch a web browser to the following URI [http://geosvc.com](http://geosvc.com)
 
- ![Geo Services main page] (/images/image1.png)
+ ![Geo Services main page](images/image1.png)
 
  - Click **Sign up** in the upper right hand corner.
 
  - Enter an email address and a password and click **Get Started**.
    - *Note: the email address is not verified.*
 
- ![Geo Services main page] (/images/image2.png)
+ ![Geo Services main page](images/image2.png)
 
- - Save (copy and paste) the Public Key that is generated based on your sign up. You will use this when issuing Geo Services REST API requests.  There is a limit of 20 requests per day.  Hopefully, you won't need that many to get it working.
+ - Save the Public Key that is generated based on your sign up. You will use this when issuing Geo Services REST API requests.  There is a limit of 20 requests per day.  Hopefully, you won't need that many to get it working.
 
- ![Geo Services main page] (images/image3.png)
+ ![Geo Services main page](images/image3.png)
 
  ## **Running the sample**
  This REXX sample can be be invoked from the TSO command line.
@@ -73,5 +73,5 @@ CITY2 - City name
 
  **Example invocation**:
  ```
- ex 'SHARA15.ZOSREST.LAB(RXEXEC1)' 'publickey Denver,CO,US Providence,RI,US -v'
- ``''
+ ex 'SCOUT.ZOSREST.LAB(RXEXEC1)' '4e39f8f8910442769bb2c17293475a10 Denver,CO,US Providence,RI,US -v'
+ ``
