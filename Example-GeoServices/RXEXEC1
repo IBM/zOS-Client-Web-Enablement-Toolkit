@@ -1407,7 +1407,7 @@ usage:
 TurnOnVerboseOutput:
  /**********************************************************/
  say '****** Set HWTH_OPT_VERBOSE_OUTPUT for connection ******'
- traceDataSetName = 'REPLACE.WITH.PREALLOCATED.DATASET'
+ traceDataSetName = 'REPLACE.ME'
  traceDD = 'MYTRACE'
 
  allocRc = allocateDsnToolkitTracefile(traceDataSetName,traceDD)
