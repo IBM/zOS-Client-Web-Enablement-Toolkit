@@ -1,27 +1,23 @@
-# **Example-GeoServices**
-
-This project demonstrates how to use the z/OS client web enablement toolkit to obtain the distance between two cities using the Geo Services REST API.
-
+## Example-GeoServices
 Geo Services is a published REST API that allows applications to find distances between two points on the map, and to get geographical information about a municipality and its zip codes, area codes, and latitude/longitude coordinates.
 
-## Distance REST API format
-For this example, we will be using the **Distance** REST API defined by the  [http://geosvc.com/docs/Ref](http://geosvc.com/docs/Ref).
+This sample uses the HTTP/HTTPS enabler portion of the toolkit to issue the Geo Services Distance REST API to obtain distance between two cities and the JSON Parser portion to retrieve the information from the response body.
 
+[Distance REST API Reference](http://geosvc.com/docs/Ref)
 ![Geo Services main page](images/image0.png)
 
-The example requires knowledge of the following pieces which you can gather from the reference:
  - **Uniform Resource Identifier (URI)**
  ```
  http://api.geosvc.com/rest/{COUNTRYCODE}/{REGION}/{CITY}/distance?apikey={APIKEY}&p={CITY2}&r={REGION2}&c={COUNTRYCODE2}
  ```
- ```
- scheme://host[:port] [/]path[?query][#fragment]
-|-------------------||-------------------------|
-	where and how to      what is the particular
-    connect?              request?
- ```
-   - **Connection portion of URI**: http://api.geosvc.com
-   - **Request portion of the URI**: /rest/{COUNTRYCODE}/{REGION}/{CITY}/distance?apikey={APIKEY}&p={CITY2}&r={REGION2}&c={COUNTRYCODE2}
+   - **Connection portion of URI** (Where and how to connect?):
+   ```
+   http://api.geosvc.com
+   ```
+   - **Request portion of the URI** (What is the particular request?):
+   ```
+   /rest/{COUNTRYCODE}/{REGION}/{CITY}/distance?apikey={APIKEY}&p={CITY2}&r={REGION2}&c={COUNTRYCODE2}
+   ```
  - **HTTP Method**: GET
  - **Parameters**
   ```
@@ -36,42 +32,56 @@ CITY2 - City name
  ```
  - **Response format**: JSON
 
- ## **Pre-requisites**
- System stuff???
+To run the sample, you first need to obtain a *Public Key* to use for the Geo Services REST API requests. This key is how the Geo Services server regulates the daily usage allowance per user.
 
- ## Retrieve public key
- The first thing you need to do is retrieve a *Public Key* to use for the Geo Services. This key is how the Geo Services server regulates the daily usage allowance per user.
+Launch a web browser to the [Geo Services URI](http://geosvc.com) and follow the **Sign up** link in the upper right hand corner.
+![Geo Services main page](images/image1.png)
 
- - Launch a web browser to the following URI [http://geosvc.com](http://geosvc.com)
+Fill in an email address (hint: it's not verified) and a password and click **Get Started**.
+![Geo Services main page](images/image2.png)
 
- ![Geo Services main page](images/image1.png)
+Save the Public Key that is generated based on your sign up. There is a limit of 20 requests per day.  Hopefully, you won't need that many to get it working.
+![Geo Services main page](images/image3.png)
 
- - Click **Sign up** in the upper right hand corner.
+In addition you also need to update the trace data set reference in the exec. Toolkit requires the verbose output directory to exist GG: add link to the pubs:
 
- - Enter an email address and a password and click **Get Started**.
-   - *Note: the email address is not verified.*
+Locate the two lines below and fill in the corresponding information:
+```
+traceDataSetName = 'REPLACE.WITH.PREALLOCATED.DATASET'
+traceDD = 'MYTRACE'
+```
 
- ![Geo Services main page](images/image2.png)
+The REXX sample can be be invoked from the TSO command line.
 
- - Save the Public Key that is generated based on your sign up. You will use this when issuing Geo Services REST API requests.  There is a limit of 20 requests per day.  Hopefully, you won't need that many to get it working.
-
- ![Geo Services main page](images/image3.png)
-
- ## **Running the sample**
- This REXX sample can be be invoked from the TSO command line.
-
- **Syntax**:  
+**Syntax**:  
 ```
  ex '<dataset name>(RXEXEC1)' 'publickey City1, State1,Country1 City2,State2,Country2 -v'
  ```
  where:
- - *city* is the name of the city
- - *state* is the 2-letter state abbreviation
- - *country* is the 2-letter country abbreviation
- - *publickey* is the Public Key you saved when you signed up  
- - *–v* is to turn on verbose output, the output is directed to a sequential variable data set `<userid>.ZOSREST.TRACE`
+  - *city* is the name of the city
+  - *state* is the 2-letter state abbreviation
+  - *country* is the 2-letter country abbreviation
+  - *publickey* is the Public Key you saved when you signed up for Geo Services
+  - *–v* is to turn on verbose output, the output is directed to a sequential variable data set `<userid>.ZOSREST.TRACE`
+
 
  **Example invocation**:
+from TSO
  ```
  ex 'SCOUT.ZOSREST.LAB(RXEXEC1)' '4e39f8f8910442769bb2c17293475a10 Denver,CO,US Providence,RI,US -v'
- ``
+ ```
+
+from UNIX
+```
+rxexec1 4e39f8f8910442769bb2c17293475a10 Denver,CO,US Providence,RI,US
+```
+You will receive an output similar to the one below
+```                                                                               
+HTTP Web Enablement Toolkit Sample (Begin)
+
+The distance between denver, co, us and
+ providence, ri, us is 1757
+ Miles.
+
+HTTP Web Enablement Toolkit Sample (End)                                                                                            
+```

@@ -19,7 +19,6 @@
 /*                                                                     */
 /* End of Copyright and License                                        */
 /***********************************************************************/
-/*---------------------------------------------------------------------*/
 /*                                                                     */
 /*  SCRIPT NAME=RXEXEC1                                                */
 /*                                                                     */
@@ -120,8 +119,7 @@ if GetArgs( argString ) <> 0 then
 /***************************/
 /* Indicate Program start  */
 /***************************/
- say '*************************************************'
- say '** HTTP Web Enablement Toolkit Sample (Begin) **'
+ say 'HTTP Web Enablement Toolkit Sample (Begin)'
  programRc = -1
 /*****************************************/
 /* Initialize request-related variables  */
@@ -211,8 +209,7 @@ if GetArgs( argString ) <> 0 then
  /* Indicate Program end  */
  /*************************/
  say
- say '** HTTP Web Enablement Toolkit Sample (End) **'
- say '***********************************************'
+ say 'HTTP Web Enablement Toolkit Sample (End)'
 
  exit programRc   /* end main */
 
@@ -384,7 +381,7 @@ HTTP_setupConnection:
     /* output, or optionally redirected to file (by use of the       */
     /* HWTH_OPT_VERBOSE_OUTPUT option)                               */
     /*****************************************************************/
-    say '**** Set HWTH_OPT_VERBOSE for connection ****'
+    say '****** Set HWTH_OPT_VERBOSE for connection ******'
     ReturnCode = -1
     DiagArea. = ''
     address hwthttp "hwthset ",
@@ -399,9 +396,9 @@ HTTP_setupConnection:
        call HTTP_surfaceDiag 'hwthset', RexxRC, ReturnCode, DiagArea.
        return fatalError( '** hwthset (HWTH_OPT_VERBOSE) failure **' )
        end /* endif hwthset failure */
-    end /* endif script invocation requested (-V) VERBOSE */
 
-    Call TurnOnVerboseOutput
+    call TurnOnVerboseOutput
+    end /* endif script invocation requested (-V) VERBOSE */
 
  /****************************************************************************/
  /* Set URI for connection to the Geo Services REST API                 host */
@@ -492,7 +489,7 @@ HTTP_connect:
 /************************************************************/
 HTTP_setupRequest:
  if VERBOSE then
-    say '** Set HWTH_OPT_REQUESTMETHOD for request **'
+    say '****** Set HWTH_OPT_REQUESTMETHOD for request ******'
  /**************************************************************/
  /* Set HTTP Request method.                                   */
  /* A GET request method is used to get data from the server.  */
@@ -530,7 +527,9 @@ HTTP_setupRequest:
  queryParms = queryParms||'&c='dCountry
 
  requestPath = requestPath||queryParms
- say requestPath
+
+ if VERBOSE then
+    say 'request URI:' requestPath
 
  ReturnCode = -1
  DiagArea. = ''
@@ -553,7 +552,7 @@ HTTP_setupRequest:
  ReturnCode = -1
  DiagArea. = ''
  if VERBOSE then
-    say 'Set HWTH_OPT_RESPONSEHDR_USERDATA for request'
+    say '****** Set HWTH_OPT_RESPONSEHDR_USERDATA for request ******'
  address hwthttp "hwthset ",
                  "ReturnCode ",
                  "RequestHandle ",
@@ -574,7 +573,7 @@ HTTP_setupRequest:
  ReturnCode = -1
  DiagArea. = ''
  if VERBOSE then
-    say 'Set HWTH_OPT_TRANSLATE_RESPBODY for request'
+    say '****** Set HWTH_OPT_TRANSLATE_RESPBODY for request ******'
  address hwthttp "hwthset ",
                  "ReturnCode ",
                  "RequestHandle ",
@@ -593,7 +592,7 @@ HTTP_setupRequest:
  ReturnCode = -1
  DiagArea. = ''
  if VERBOSE then
-    say 'Set HWTH_OPT_RESPONSEBODY_USERDATA for request'
+    say '****** Set HWTH_OPT_RESPONSEBODY_USERDATA for request ******'
  address hwthttp "hwthset ",
                  "ReturnCode ",
                  "RequestHandle ",
@@ -809,7 +808,7 @@ HTTP_setRequestHeaders:
  /* just-produced list               */
  /************************************/
  if VERBOSE then
-    say 'Set HWTH_OPT_HTTPHEADERS for request'
+    say '****** Set HWTH_OPT_HTTPHEADERS for request ******'
  ReturnCode = -1
  DiagArea. = ''
  address hwthttp "hwthset ",
@@ -994,9 +993,11 @@ JSON_searchAndDeserializeData:
  /***************************************/
  unit = JSON_findValue( 0, "Unit", HWTJ_STRING_TYPE )
  distanceData.unit = unit
+ say
  say 'The distance between 'sCity', 'sState', 'sCountry' and '
- say '   'dCity', 'dState', 'dCountry' is 'distanceData.distanceValue
- say '   'distanceData.unit'.'
+ say ' 'dCity', 'dState', 'dCountry' is 'distanceData.distanceValue
+ say ' 'distanceData.unit'.'
+ say
  return  /* end subroutine */
 
 
@@ -1405,23 +1406,28 @@ usage:
 /***********************************************/
 TurnOnVerboseOutput:
  /**********************************************************/
- say '**** Set HWTH_OPT_VERBOSE_OUTPUT for connection ****'
- traceDataSetName = userid()||'.ZOSREST.TRACE'
+ say '****** Set HWTH_OPT_VERBOSE_OUTPUT for connection ******'
+ traceDataSetName = 'REPLACE.WITH.PREALLOCATED.DATASET'
  traceDD = 'MYTRACE'
- allocRc = allocateDsnToolkitTracefile( traceDatasetName,traceDD)
+
+ allocRc = allocateDsnToolkitTracefile(traceDataSetName,traceDD)
+
  DiagArea. = ''
  address hwthttp "hwthset ",
                  "ReturnCode ",
                  "ConnectionHandle ",
                  "HWTH_OPT_VERBOSE_OUTPUT ",
-                 "traceDD ",
+                 "traceDD",
                  "DiagArea."
+
  RexxRC = RC
  if HTTP_isError(RexxRC,ReturnCode) then
     do
     call HTTP_surfaceDiag 'hwthset', RexxRC, ReturnCode, DiagArea.
-    return fatalError( '** hwthset (HWTH_OPT_VERBOSE) failure **' )
+    return fatalError( '** hwthset (HWTH_OPT_VERBOSE) failure **')
     end /* endif hwthset failure */
+
+ say 'Trace output location: 'traceDataSetName
  return
 
  /*************************************************/
@@ -1434,13 +1440,15 @@ TurnOnVerboseOutput:
  allocateDsnToolkitTracefile: procedure expose (PROC_GLOBALS)
   datasetName = arg(1)
   DDname = arg(2)
-  say datasetname
-  say DDname
+
+  /* allocates datasetName to DDName and directs messages */
+  /* to z/OS UNIX standard error (sdterr)                 */
   alloc = 'alloc fi('||DDname||') '
-  alloc = alloc||'da('||quoted(datasetName)||' old msg(2)'
+  alloc = alloc||'da('||quoted(datasetName)||') old msg(2)'
   call bpxwdyn alloc
   allocRc = Result
   say 'BPXWDYN Result: '||allocRc
+
   return allocRc  /* end procedure */
 
  /***********************************************************/
