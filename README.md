@@ -4,4 +4,8 @@ This repository contains samples that take advantage of the z/OS Client Web Enab
 
 [**Example-GeoServices**](https://github.com/IBM/zOS-Client-Web-Enablement-Toolkit/tree/master/Example-GeoServices)
 
-This project demonstrates how to use the toolkit to obtain the distance between two cities using the Geo Services REST API.
+This sample demonstrates how to use the toolkit to obtain the distance between two cities using the Geo Services REST API.
+
+[**Example-zOSMF**](https://github.com/IBM/zOS-Client-Web-Enablement-Toolkit/tree/master/Example-zOSMF)
+
+This sample demonstrates how to use the z/OS client web enablement toolkit to issue z/OSMF REST Services.
