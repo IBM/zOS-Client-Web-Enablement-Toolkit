@@ -1,12 +1,7 @@
 ## Example-zOSMF
 
 ## Overview ##
-z/OS Management Facility, z/OSMF, provides a rich set of REST APIs that allow your application to perform many different types of tasks including working with jobs, data sets, provisioning z/OS Middleware, Notification services, TSO/E functions, z/OS Console and much, much more.   
-
-[z/OSMF REST services](https://ibm.biz/BdYXHX)
-
-![z/OSMF REST services image](images/zOSMFRestServices.png)
-
+z/OS Management Facility, z/OSMF, provides a rich set of [REST APIs](https://ibm.biz/BdYXHX) that allow your application to perform many different types of tasks including working with jobs, data sets, provisioning z/OS Middleware, Notification services, TSO/E functions, z/OS Console and much, much more.   
 
 Imagine that your shop would like a certain job on a remote system to be run on a regular basis.  If the resulting job output shows a problem, then you also want to email the output information to the appropriate person so they can address the issue.
 
@@ -37,13 +32,7 @@ This sample requires the following
 
  First, update the default job name, `TKTxxx1`, to something more appropriate. Keep in mind, the AT-TLS policy definition and if it applies to a specific job prefix
 
- ![jobname](images/jobName.png)
-
- Now locate the `HTTP_setupSubmitReq` function
-
- ![HTTP_setupSubmitReq](images/HTTP_setupSubmitReq.png)
-
-  and make the following two updates in the function
+ Now locate the `HTTP_setupSubmitReq` function and make the following two updates in the function
 
    1. Update `userid` and `password` to valid credentials for an active z/OSMF server referenced above.
 
@@ -63,28 +52,11 @@ This sample requires the following
   ![emailAddr](images/email.png)
 
 ## Invocation
-Run the program by simply submitting the RXZOSMF member.   Type **sub** from the command line and hit enter.
-
-![subprogram](images/Sub.png)
-
+Run the program by simply submitting the RXZOSMF member.
 
 The results of the program are split up between two locations
   - The output of the program is contained in SDSF. Depending on your system, you can go into option 13.14 from the main ISPF menu and then select the H option.  You can sort on jobs with your jobname prefix or owned by your  userid.  For example, if your jobname is TKTLAB01, you can type prefix TKTLAB01.
 
-    The job output will include the following content that resulted from the REXX say statements in the sample
-
-    ![rexxsay](images/joboutput.png)
-
-
   - The trace output is at the location pointed to by `MYTRACE` DD. For example, if you had update the value of `MYTRACE` to `/sharelab/shara01/shara01.trace` then if you `cd` into `/sharelab/shara01` directory you should now see the `shara01.trace` file.
 
-    ![zFStracefile](images/zFSTrace.png)
-
-    The content of the trace file will look something like this
-
-    ![traceOutput](images/traceOutput.png)
-
-
-In addition, if the `HLTHCHK` failed, as it is expected to, the email address you specified should have received the following email
-
-  ![failureemail](images/emailResult.png)
+In addition, if the `HLTHCHK` failed, as it is expected to, the email address you specified should have received an email with **HealthCheck Exception!** as the subject line.
