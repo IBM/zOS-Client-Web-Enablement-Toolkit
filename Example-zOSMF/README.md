@@ -27,20 +27,19 @@ This sample requires the following
 - Store `RXZOSMF` and `HLTHCHK` into datasets
 
 ## RXZOSMF Prep work
-This sample is designed to be a REXX program run as a batch job.
+- This sample is designed to be a REXX program run as a batch job. Update the job name, `TKTxxx1`, to something more appropriate. Keep in mind, the AT-TLS policy definition and if it applies to a specific job prefix
 
-- Update the job name, `TKTxxx1`, to something more appropriate. Keep in mind, the AT-TLS policy definition and if it applies to a specific job prefix
+- Update `userid` and `password` with valid credentials for an active z/OSMF server referenced above.
+    ```
+    userid = xxxxxxx
+    password = yyyyyyy
+    ```
 
-- Locate the `HTTP_setupSubmitReq` function and make the following two updates in the function
+- Update `example.dataset(HLTHCHK)` with the location of your `HLTHCK` job. Don’t remove any of the quotes or you will likely get a REXX syntax error.  
 
-   1. Update `userid` and `password` to valid credentials for an active z/OSMF server referenced above.
+- Next, update the location of a zFS file where the trace output will be directed to. This samples is setup to generate verbose output, [`HWTH_OPT_VERBOSE`](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/ieac1-cwe-http-options.htm), and direct it to a location pointed to by the `MYTRACE` DD name, [`HWTH_OPT_VERBOSE_OUTPUT`](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/ieac1-cwe-http-options.htm). The `MYTRACE` DD is defined at the bottom of the sample. Replace `/sharelab/sharxxx/sharxxx.trace` with your desired zFS location.
 
-   2. Update `example.dataset(HLTHCHK)` with the location of your `HLTHCK` job. Don’t remove any of the quotes or you will likely get a REXX syntax error.  
-
-- Update the location of a zFS file where the trace output will be directed to. This samples is setup to generate verbose output, [`HWTH_OPT_VERBOSE`](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/ieac1-cwe-http-options.htm), and direct it to a location pointed to by the `MYTRACE` DD name, [`HWTH_OPT_VERBOSE_OUTPUT`](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/ieac1-cwe-http-options.htm). The `MYTRACE` DD is defined at the bottom of the sample. Replace `/sharelab/sharxxx/sharxxx.trace` with your desired zFS location.
-
-- Update the email address that the job failure notification will be sent to.
-  Replace `xxxxxxx@yy.zzzzzzz` with a valid email address.
+- Lastly, replace `xxxxxxx@yy.zzzzzzz` with a valid email address that the job failure notification should be sent to.
 
 ## Invocation
 Run the program by simply submitting the RXZOSMF member.
