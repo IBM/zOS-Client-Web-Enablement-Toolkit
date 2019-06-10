@@ -32,7 +32,7 @@ This sample requires the following
 - Updates to the sample itself
 
  This sample is designed to be a REXX program run as a batch job.
- First store this sample, `RXZOSMF` as a member in a dataset. Next, update the default job name, `TKTxxx1`, to something more appropriate. Keep in mind, the AT-TLS policy definition and if it applies to a specific job prefix
+ First, store this sample, `RXZOSMF`, as a member in a dataset. Next, update the default job name, `TKTxxx1`, to something more appropriate. Keep in mind, the AT-TLS policy definition and if it applies to a specific job prefix
 
  ![jobname](images/jobName.png)
 
@@ -44,12 +44,12 @@ This sample requires the following
 
     1. **userid and password information**
 
-      These are the credentials referenced above for an active z/OSMF server
+    These are the credentials referenced above for an active z/OSMF server
       ![z/OSMF user info](images/use_pswd.png)
 
     2. **location of the `HLTHCK` job**
 
-      Store the `HLTHCK` job as a member in a dataset and replace `example.dataset(member)` with the location of your job. Don’t remove any of the quotes or you will likely get a REXX syntax error.   
+    Store the `HLTHCK` job as a member in a dataset and replace `example.dataset(member)` with the location of your job. Don’t remove any of the quotes or you will likely get a REXX syntax error.   
 
       ![HLTHCK job](images/HLTHCHK_DS.png)
 
