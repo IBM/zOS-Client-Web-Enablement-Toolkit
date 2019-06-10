@@ -13,14 +13,10 @@ Imagine that your shop would like a certain job on a remote system to be run on 
 This sample illustrates how an application, using the toolkit, can leverage some of the REST APIs listed above, to implement this scenario.
 
 The sample will perform the following steps:
-1. Submit a simple z/OS healthcheck job, `HLTHCHK`
-  - using **z/OSMF Submit job REST API**
-1. Check the status of the job to make sure it has completed successfully
-  - using **z/OSMF job status retrieval REST API**
-1. If the job completed successfully, it will retrieve the output written to a data set
-  - using **z/OSMF data set retrieval REST API**
-1. It will then analyze the output.  If the healthcheck failed in any way, then it will send the output to an email address
-  - using **z/OSMF notification REST API**
+1. Submit a simple z/OS healthcheck job, `HLTHCHK`, using **z/OSMF Submit job REST API**
+2. Check the status of the job to make sure it has completed successfully, using **z/OSMF job status retrieval REST API**
+3. If the job completed successfully, it will retrieve the output written to a data set, using **z/OSMF data set retrieval REST API**
+4. It will then analyze the output.  If the healthcheck failed in any way, then it will send the output to an email address, using **z/OSMF notification REST API**
 
 
 ## Prep work
@@ -46,16 +42,16 @@ This sample requires the following
 
   and make the following two updates in the function
 
-   1. **userid and password information**
+    1. **userid and password information**
 
-    These are the credentials referenced above for an active z/OSMF server
-   ![z/OSMF user info](images/use_pswd.png)
+      These are the credentials referenced above for an active z/OSMF server
+      ![z/OSMF user info](images/use_pswd.png)
 
-   2. **location of the `HLTHCK` job**
+    2. **location of the `HLTHCK` job**
 
-    Store the `HLTHCK` job as a member in a dataset and replace `example.dataset(member)` with the location of your job. Don’t remove any of the quotes or you will likely get a REXX syntax error.   
+      Store the `HLTHCK` job as a member in a dataset and replace `example.dataset(member)` with the location of your job. Don’t remove any of the quotes or you will likely get a REXX syntax error.   
 
-    ![HLTHCK job](images/HLTHCHK_DS.png)
+      ![HLTHCK job](images/HLTHCHK_DS.png)
 
   Next you want to update the location of a zFS file where the trace output will be directed to. This samples is setup to generate verbose output, [`HWTH_OPT_VERBOSE`](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/ieac1-cwe-http-options.htm), and direct it to a location pointed to by the `MYTRACE` DD name, [`HWTH_OPT_VERBOSE_OUTPUT`](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/ieac1-cwe-http-options.htm). The `MYTRACE` DD is defined at the bottom of the sample. Replace `/sharelab/sharxxx/sharxxx.trace` with your desired zFS location.
 
@@ -74,6 +70,7 @@ Run the program by simply submitting the RXZOSMF member.   Type **sub** from the
 
 The results of the program are split up between two locations
   - SDSF contains the output of the program
+
     For example, depending on your system you can go into option 13.14 from the main ISPF menu and then select the H option.  You can sort on jobs with your jobname prefix or owned by your  userid.  For example, if your jobname is TKTLAB01, you can type prefix TKTLAB01.
 
     The job output will include the following content that resulted from the REXX say statements in the sample
@@ -82,13 +79,14 @@ The results of the program are split up between two locations
 
 
   - the location pointed to by `MYTRACE` DD contains the trace output
+
     For example, if you had update the value of `MYTRACE` to `/sharelab/shara01/shara01.trace` then if you cd into `/sharelab/shara01` directory you should now see the `shara01.trace` file.
 
- ![zFStracefile](images/zFSTrace.png)
+    ![zFStracefile](images/zFSTrace.png)
 
     The content of the trace file will look something like this
 
-  ![traceOutput](images/traceOutput.png)
+    ![traceOutput](images/traceOutput.png)
 
 
 In addition, if the `HLTHCHK` failed, as it is expected to, the email address you specified should have received the following email
