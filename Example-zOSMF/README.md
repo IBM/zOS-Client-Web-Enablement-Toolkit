@@ -8,18 +8,18 @@ Imagine that your shop would like a certain job on a remote system to be run on 
 This sample illustrates how an application, using the toolkit, can leverage some of the REST APIs listed above, to implement this scenario.
 
 The sample will perform the following steps:
-1. Submit a simple z/OS healthcheck job, `HLTHCHK`, using **z/OSMF Submit job REST API**
-2. Check the status of the job to make sure it has completed successfully, using **z/OSMF job status retrieval REST API**
-3. If the job completed successfully, it will retrieve the output written to a data set, using **z/OSMF data set retrieval REST API**
-4. It will then analyze the output.  If the healthcheck failed in any way, then it will send the output to an email address, using **z/OSMF notification REST API**
+1. Submit a simple z/OS healthcheck job, `HLTHCHK`, using [z/OSMF Submit job REST API](https://www.ibm.com/support/knowledgecenter/SSLTBW_2.3.0/com.ibm.zos.v2r3.izua700/IZUHPINFO_API_PutSubmitJob.htm)
+2. Check the status of the job to make sure it has completed successfully, using [z/OSMF job status retrieval REST API](https://www.ibm.com/support/knowledgecenter/SSLTBW_2.3.0/com.ibm.zos.v2r3.izua700/IZUHPINFO_API_GetJobStatus.htm)
+3. If the job completed successfully, it will retrieve the output written to a data set, using [z/OSMF data set retrieval REST API](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.izua700/IZUHPINFO_API_GetReadDataSet.htm)
+4. It will then analyze the output.  If the healthcheck failed in any way, then it will send the output to an email address, using [z/OSMF notification REST API](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.izua700/IZUHPINFO_API_NOTIFICATIONS.htm)
 
 
 ## System Prep work
 This sample requires the following
 -  A userid on an active z/OSMF server that has permission to issue the following z/OSMF REST services
-    - z/OSMF Submit job
-    - z/OSMF data set retrieval
-    - z/OSMF notification
+    - [z/OSMF Submit job](https://www.ibm.com/support/knowledgecenter/SSLTBW_2.3.0/com.ibm.zos.v2r3.izua700/IZUHPINFO_API_RESTJOBS.htm)
+    - [z/OSMF data set retrieval](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.izua700/IZUHPINFO_API_RESTFILES.htm)
+    - [z/OSMF notification](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.izua700/IZUHPINFO_API_NOTIFICATIONS.htm)
 
 
 - The z/OSMF REST Services require an HTTPS connections. The system the sample is on should have [Application Transparent TLS, AT-TLS](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/attlstoolkit.htm), in place to allows for communication with the z/OSMF server for jobs prefixed with the letters `TKT`.
