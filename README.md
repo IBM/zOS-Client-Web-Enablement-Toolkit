@@ -9,3 +9,7 @@ This sample demonstrates how to use the toolkit to obtain the distance between t
 [**Example-zOSMF**](https://github.com/IBM/zOS-Client-Web-Enablement-Toolkit/tree/master/Example-zOSMF)
 
 This sample demonstrates how to use the z/OS client web enablement toolkit to issue z/OSMF REST Services.
+
+[**Example-Download**](https://github.com/IBM/zOS-Client-Web-Enablement-Toolkit/tree/master/Example-Download)
+
+This sample demonstrates how a native z/OS application can use toolkit to download content from a REST API endpoint.
