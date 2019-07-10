@@ -11,7 +11,7 @@ It is intended to showcase how a native z/OS application can easily
 download content accessible via a REST API.        
 
 ## Prep work
-Compile and link hwtdload
+Compile and link hwtdload.c
 
 **Encoding consideration**:
   hwtdload.c file was uploaded and tested using ISO8859-1 encoding
