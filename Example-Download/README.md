@@ -12,7 +12,7 @@ It is intended to showcase how a native z/OS application can easily
 download content accessible via a REST API.        
 
 ## Prep work
-Compile and link hwtdload.c
+Compile and link `hwtdload.c`
 
 **Encoding consideration**:
   `hwtdload.c` file was uploaded and tested using ISO8859-1 encoding
@@ -35,7 +35,7 @@ where `-I` points to a location that contains the IBM-supplied C header `hwthic.
 <br>-t *to*, the location *to* which the downloaded content is to be stored
 * **for a zFS file**, specify absolute pathname
 * **for a data set**, specify name of a pre-allocated sequential data set, 
-                       with the following attributes: DSORG=PS, RECF=FB, LRECL=1024
+                       with the following attributes: `DSORG=PS, RECF=FB, LRECL=1024`
    
    **NOTE:** Should the content being downloaded exceed the zFS or data set capacity, the program will fail with messages indicating how much data was, and was not written.
    
@@ -46,7 +46,7 @@ where `-I` points to a location that contains the IBM-supplied C header `hwthic.
 
 <br>-k certificate *keystore*, a SAF *keyring* or a *keyring* created using the SystemSSL gskkyman utility
 <br>-s *stashfile*, password stashfile associated with the certificate keystore
-<br>-v *verbose*, turn on HTTP/HTTPS enabler tracing option
+<br>-v *verbose*, turn on [**HWTH_OPT_VERBOSE** tracing option](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/ieac1-cwe-http-options.htm)
 
 
 **sample output**
@@ -54,10 +54,10 @@ where `-I` points to a location that contains the IBM-supplied C header `hwthic.
 hwtdload -k keyring.kdb  -s keyring.sth -f https://example.org/bytes/10000 -t /u/HWT/test/content
 
 Using connect scheme: https
-Using host: httpbin.org
+Using host: example.org
 Using requestUri: /bytes/10000
-Using file (or dataset): /u/scout/HWT/test/junk1
-Using keyring: ./db/keyring.kdb
-Using stashfile: ./db/keyring.sth
-File successfully downloaded to /u/scout/HWT/test/junk1 (10000 bytes)
+Using file (or dataset): /u/HWT/test/content
+Using keyring: keyring.kdb
+Using stashfile: keyring.sth
+File successfully downloaded to /u/HWT/test/content (10000 bytes)
 ```
