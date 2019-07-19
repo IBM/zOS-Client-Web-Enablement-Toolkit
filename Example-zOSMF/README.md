@@ -22,7 +22,7 @@ This sample requires the following
     - [z/OSMF notification](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.izua700/IZUHPINFO_API_NOTIFICATIONS.htm)
 
 
-- The z/OSMF REST Services require an HTTPS connections. The system the sample is on should have [Application Transparent TLS, AT-TLS](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/attlstoolkit.htm), in place to allows for communication with the z/OSMF server for jobs prefixed with the letters `TKT`.
+- The z/OSMF REST Services require an HTTPS connection, this sample assumes there is an [AT-TLS Policy](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/attlstoolkit.htm) in place to handle this requirement. This [AT-TLS Policy](ATTLSPolicy) allows for communication with the z/OSMF server for jobs prefixed with the letters `TKT`.
 
 - Store `RXZOSMF` and `HLTHCHK` into datasets
 
