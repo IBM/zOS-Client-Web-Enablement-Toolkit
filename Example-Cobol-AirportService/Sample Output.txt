@@ -1,0 +1,117 @@
+***********************************************
+** HTTP Web Enablement Toolkit Sample Begins **
+** Initialize succeeded (HWTHINIT)
+** Set HWTH-OPT-VERBOSE for connection
+** Set HWTH-OPT-URI for connection
+** Set HWTH-OPT-PORT for connection
+** Set HWTH-OPT-COOKIETYPE for connection
+** Connect succeeded (HWTHCONN)
+** Initialize succeeded (HWTHINIT)
+** Set HWTH-REQUESTMETHOD for request
+** Set HWTH-OPT-URI for request
+** Adding SLIST APPEND
+** Set HWTH-OPT-HTTPHEADERS for request
+** Set HWTH-OPT-TRANSLATE-RESPBODY for request
+** Set HWTH-OPT-RESPONSEHDR-EXIT for request
+** Set HWTH-OPT-RESPONSEHDR-USERDATA for request
+** Set HWTH-OPT-RESPONSEBODY-EXIT for request
+** Set HWTH-OPT-RESPONSEBODY-USERDATA for request
+*******************************************
+** Response Header Exit Receives Control **
+** HTTP Status Code: 000000200
+** HTTP Reason Phrase: OK
+  Response Header 000000001
+    Name: Date
+    Value: Fri, 27 Sep 2019 18:45:13 GMT
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Header Exit Receives Control **
+  Response Header 000000002
+    Name: Server
+    Value: Apache/2.2.15 (CentOS)
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Header Exit Receives Control **
+  Response Header 000000003
+    Name: X-Powered-By
+    Value: PHP/5.3.3
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Header Exit Receives Control **
+  Response Header 000000004
+    Name: X-RateLimit-Limit
+    Value: 120
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Header Exit Receives Control **
+  Response Header 000000005
+    Name: X-RateLimit-Remaining
+    Value: 118
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Header Exit Receives Control **
+  Response Header 000000006
+    Name: X-RateLimit-Reset
+    Value: 1569613312
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Header Exit Receives Control **
+  Response Header 000000007
+    Name: Vary
+    Value: Accept-Encoding
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Header Exit Receives Control **
+  Response Header 000000008
+    Name: Content-Length
+    Value: 247
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Header Exit Receives Control **
+  Response Header 000000009
+    Name: Connection
+    Value: close
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Header Exit Receives Control **
+  Response Header 000000010
+    Name: Content-Type
+    Value: application/json
+** Response Header Exit Returns          **
+*******************************************
+*******************************************
+** Response Body Exit Receives Control   **
+**  Response body is in JSON format
+**  Initializing JSON parser
+  Parser initialized.
+  Response body parsed successfully
+  Extracting airport status information...
+  Parser work area freed.
+** Response Body Exit Returns            **
+*******************************************
+** Request succeeded (HWTHRQST)
+***********************************
+Airport data for OMA
+***********************************
+Airport name: Eppley Airfield Airport
+Airport state: Omaha, NE
+Airport country: United States
+Airport longitude: -95.894056
+Airport latitude: 41.303167
+-----------------------------------
+** Terminate succeeded (HWTHTERM)
+** Disconnect succeeded (HWTHDISC)
+** Terminate succeeded (HWTHTERM)
+** Program Ended Successfully                **
+** HTTP Web Enablement Toolkit Sample Ends   **
+***********************************************
+

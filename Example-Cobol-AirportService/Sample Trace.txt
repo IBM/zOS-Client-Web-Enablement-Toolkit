@@ -1,0 +1,117 @@
+t-Entry: iconnImpl
+t: Connecting to www.airport-data.com via port 80
+t: Attempting to connect to IP address: 192.99.41.136
+t-Entry: setSocketOptions
+t-Exit: setSocketOptions
+t: Connection established using socket: 0
+t-Entry: initTranslationTables
+t-Exit: initTranslationTables
+t-Entry: checkForTTLS
+t: Socket maps to TTLSRule: (none)
+t: ATTLS is *not* in effect
+t-Exit: iconnImpl
+t-Entry: sendrqst
+t-Entry: sendrqstImpl
+t-Entry: appendRequestLine
+t: No proxy is being used for the request
+ÝHWTHCKST¨ (no request cookies specified)
+ÝHWTHCKST¨ getCookieHeader() - No applicable cookies found
+t: No applicable cookies found
+t: * * * * * HTTP REQUEST HEADERS * * * * *
+t: GET /api/ap_info.json?iata=OMA HTTP/1.1
+
+Accept: application/json
+
+Accept-Language: en-US
+
+Host: www.airport-data.com:80
+
+
+
+t: * * * * * END HTTP REQUEST HEADERS * * * * *
+t-Entry: translate
+t-Exit: translate
+t-Entry: sendInlineRequest
+t-Entry: doSend
+t-Entry: ignoreSignal
+t: now ignoring signal: SIGPIPE
+t-Exit: ignoreSignal
+t-Entry: restoreSignal
+t: restoring signal: SIGPIPE
+t-Exit: restoreSignal
+t: send()
+t:   bytes sent: 124
+t:   total bytes: 124
+t:   bytes remaining: 124
+t: send successful.
+t-Exit: doSend
+t-Exit: sendrqstImpl
+t-Entry: recvresp
+t-Entry: recvrespImpl
+t-Entry: initReceiveVars
+t: Response buffer is empty.
+t-Entry: getNextResponseData
+t: Now processing 538 additional response bytes.
+t-Entry: processResponseData
+t-Entry: translate
+t-Exit: translate
+t-Entry: parseResponseHeaders
+t: HTTP status = 200
+t: HTTP version = HTTP/1.1
+t: HTTP reason = OK
+t: Header: Date = Fri, 27 Sep 2019 18:45:13 GMT
+t-Entry: headerCallback
+t-Exit: headerCallback
+t: Header: Server = Apache/2.2.15 (CentOS)
+t-Entry: headerCallback
+t-Exit: headerCallback
+t: Header: X-Powered-By = PHP/5.3.3
+t-Entry: headerCallback
+t-Exit: headerCallback
+t: Header: X-RateLimit-Limit = 120
+t-Entry: headerCallback
+t-Exit: headerCallback
+t: Header: X-RateLimit-Remaining = 118
+t-Entry: headerCallback
+t-Exit: headerCallback
+t: Header: X-RateLimit-Reset = 1569613312
+t-Entry: headerCallback
+t-Exit: headerCallback
+t: Header: Vary = Accept-Encoding
+t-Entry: headerCallback
+t-Exit: headerCallback
+t: Header: Content-Length = 247
+t-Entry: headerCallback
+t-Exit: headerCallback
+t: Header: Connection = close
+t-Entry: headerCallback
+t-Exit: headerCallback
+t: Header: Content-Type = application/json
+t-Entry: headerCallback
+t-Exit: headerCallback
+t-Entry: processResponseDataInline
+t-Entry: translate
+t-Exit: translate
+t: Invoking the user specified body exit
+t: Client received 538 byte response:
+t:
+Response:
+First 40 (of 247) bytes: {"icao":"KOMA","iata":"OMA","name":"Eppl (Hex: c07f898381967f7a7fd2d6d4c17f6b7f8981a3817f7a7fd6d4c17f6b7f95
+8194857f7a7fc5979793)
+t: Last 40 (of 247) bytes: data.com\/airport\/OMA\/","status":200}. (Hex: 8481a3814b839694e061818999979699a3e061d6d4c1e0617f6b7fa2a3
+81a3a4a27f7af2f0f0d015)
+t-Entry: finalizeResponse
+t: (Explicit) connection closed by remote system.
+t-Entry: idiscImpl
+t: Closing socket: 0
+t-Exit: idiscImpl
+t-Exit: recvrespImpl
+t-Exit: recvresp
+t-Exit: sendrqst
+t-Entry: idisc
+t-Entry: idiscImpl
+t: Redundant socket shutdown.
+t: Closing socket: 0
+t: Redundant socket close.
+t-Exit: idiscImpl
+

@@ -13,3 +13,7 @@ This sample demonstrates how to use the z/OS client web enablement toolkit to is
 [**Example-Download**](https://github.com/IBM/zOS-Client-Web-Enablement-Toolkit/tree/master/Example-Download)
 
 This sample demonstrates how a native z/OS application can use toolkit to download content from a REST API endpoint.
+
+[**Example-Cobol-AirportService**](https://github.com/IBM/zOS-Client-Web-Enablement-Toolkit/tree/master/Example-Cobol-AirportService)
+
+This sample demonstrates how to use the toolkit in Cobol to obtain the information about an airport using the Airport Service REST API.
