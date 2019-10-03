@@ -2,22 +2,25 @@
        PROGRAM-ID. HWTHXCB1.
       * START OF SPECIFICATIONS * * * * * * * * * * * * * * * * * * *  *
       *                                                                *
-      *----------------------------------------------------------------*
-      *   PROPRIETARY STATEMENT                                        *
+      * Beginning of Copyright and License                             *
       *                                                                *
-      *   LICENSED MATERIALS - PROPERTY of IBM                         *
-      *   5650-ZOS COPYRIGHT IBM CORP. 2015                            *
-      *   STATUS=HBB7790                                               *
+      * Copyright 2019 IBM Corp.                                       *
       *                                                                *
-      *   END_OF_PROPRIETARY_STATEMENT                                 *
-      *----------------------------------------------------------------*
+      * Licensed under the Apache License, Version 2.0 (the "License");*
+      * you may not use this file except in compliance with the        *
+      * License.                                                       *
+      * You may obtain a copy of the License at                        *
       *                                                                *
-      *   THIS SAMPLE PROGRAM IS PROVIDED FOR TUTORIAL PURPOSES ONLY.  *
-      *   A COMPLETE HANDLING OF ERROR CONDITIONS HAS NOT BEEN SHOWN OR*
-      *   ATTEMPTED, AND THIS PROGRAM HAS NOT BEEN SUBMITTED TO FORMAL *
-      *   IBM TESTING.  THIS PROGRAM IS DISTRIBUTED ON AN 'AS IS'      *
-      *   BASIS WITHOUT ANY WARRANTIES EITHER EXPRESSED OR IMPLIED.    *
+      * http://www.apache.org/licenses/LICENSE-2.0                     *
       *                                                                *
+      * Unless required by applicable law or agreed to in writing,     *
+      * software distributed under the License is distributed on an    *
+      * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,   *
+      * either express or implied.  See the License for the specific   *
+      * language governing permissions and limitations under the       *
+      * License.                                                       *
+      *                                                                *
+      * End of Copyright and License                                   *
       *----------------------------------------------------------------*
       *                                                                *
       *  MODULE NAME=HWTHXCB1                                          *
