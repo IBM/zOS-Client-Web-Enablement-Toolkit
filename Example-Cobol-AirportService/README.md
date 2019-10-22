@@ -3,7 +3,7 @@ Airport Info is a published REST API that allows applications to pull descriptiv
 
 Example: http://www.airport-data.com/api/ap_info.json?iata=LAX
 
-This example is based upon the Cobol code distributed with the Toolkit in SYS1.SAMPLIB. The SAMPLIB version invokes an FAA service that is no longer available.
+This example is based upon an old version of the Cobol code distributed with the Toolkit in SYS1.SAMPLIB. The SAMPLIB version invoked an FAA service that is no longer available.
 
 
 
@@ -11,7 +11,9 @@ This example is based upon the Cobol code distributed with the Toolkit in SYS1.S
 
 Insure that the service host and port 80 is available to the z/OS system running the example. Recommend that you try to invoke the API using cURL (if it's available.) The API should return something like:
 
+```
 {"icao":"KLAX","iata":"LAX","name":"Los Angeles International Airport","location":"Los Angeles, CA","country":"United States","country_code":"US","longitude":"-118.408068","latitude":"33.942495","link":"http:\/\/www.airport-data.com\/airport\/LAX\/","status":200} 
+```
 
 ## What to do if you can't get z/OS to hit http://www.airport-data.com:80
 
