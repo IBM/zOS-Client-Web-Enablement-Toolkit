@@ -17,3 +17,7 @@ This sample demonstrates how a native z/OS application can use toolkit to downlo
 [**Example-Cobol-AirportService**](https://github.com/IBM/zOS-Client-Web-Enablement-Toolkit/tree/master/Example-Cobol-AirportService)
 
 This sample demonstrates how to use the toolkit in Cobol to obtain the information about an airport using the Airport Service REST API.
+
+[**Example-Slack**](Example-Slack/)
+
+This sample demonstrates how to use the z/OS Client Web Enablement Toolkit to post an update to a Slack channel.
