@@ -16,7 +16,8 @@ This sample will perform the following steps:
 
 ## Slack prep work
 
-1. Obtain an OAuth token
+Create an Incoming Webhook - see the [Slack documentation](https://api.slack.com/messaging/webhooks)
+for more details.
 
 
 ## System prep work
