@@ -124,7 +124,7 @@ If RC \= 0 Then Exit 12
 Address MVS "EXECIO * DISKR MESSAGES (STEM Messages. FINIS"
 
 /* Do an empty write to clear the data set */
-/* Address MVS "EXECIO 0 DISKW MESSAGES (OPEN FINIS" */
+Address MVS "EXECIO 0 DISKW MESSAGES (OPEN FINIS"
 
 /* Close the message data set */
 Address TSO "FREE FILE(MESSAGES)"
