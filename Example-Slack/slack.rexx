@@ -111,26 +111,6 @@ Address TSO "FREE FILE(OAUTH)"
 
 
 /*
- * Pull in messages to be emitted to Slack as a stem variable.
- */
-
-/* Open the data set containing the message data */
-Address TSO "ALLOCATE DA('" || msgDataset || "') FILE(MESSAGES) OLD"
-
-/* Check this allocate worked OK */
-If RC \= 0 Then Exit 12
-
-/* Read in all the records */
-Address MVS "EXECIO * DISKR MESSAGES (STEM Messages. FINIS"
-
-/* Do an empty write to clear the data set */
-Address MVS "EXECIO 0 DISKW MESSAGES (OPEN FINIS"
-
-/* Close the message data set */
-Address TSO "FREE FILE(MESSAGES)"
-
-
-/*
  * Initialise the environment.
  */
 
@@ -191,6 +171,26 @@ Address HWTHTTP "hwthconn",
                 "DiagArea."
 
 If ReturnCode \= 0 Then Call ShowError "hwthconn"
+
+
+/*
+ * Pull in messages to be emitted to Slack as a stem variable.
+ */
+
+/* Open the data set containing the message data */
+Address TSO "ALLOCATE DA('" || msgDataset || "') FILE(MESSAGES) OLD"
+
+/* Check this allocate worked OK */
+If RC \= 0 Then Exit 12
+
+/* Read in all the records */
+Address MVS "EXECIO * DISKR MESSAGES (STEM Messages. FINIS"
+
+/* Do an empty write to clear the data set */
+Address MVS "EXECIO 0 DISKW MESSAGES (OPEN FINIS"
+
+/* Close the message data set */
+Address TSO "FREE FILE(MESSAGES)"
 
 
 /*
