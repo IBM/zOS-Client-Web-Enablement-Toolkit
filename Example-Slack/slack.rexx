@@ -67,6 +67,22 @@ msgDataset = 'hlq.SLACK.MESSAGES'
 /* Name of data set containing the secret OAuth token */
 oauthDataset = 'hlq.SLACK.OAUTH'
 
+/*
+ * TLS cipher suites: we need to establish a list of what is acceptable
+ * to us as a client.
+ */
+
+/* TLS cipher suite list (4-character variants) */
+tlsCipherSuiteList = 'C02F' || 'C027' || 'C030' || ,
+                     'C028' || '009C' || '009D' || '003C'
+
+/* C02F = TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 */
+/* C027 = TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 */
+/* C030 = TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 */
+/* C028 = TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 */
+/* 009C = TLS_RSA_WITH_AES_128_GCM_SHA256 */
+/* 009D = TLS_RSA_WITH_AES_256_GCM_SHA384 */
+/* 003C = TLS_RSA_WITH_AES_128_CBC_SHA256 */
 
 /*********************************************************************/
 /*                                                                   */
@@ -146,6 +162,12 @@ If ReturnCode \= 0 Then Call ShowError "hwthinit (connection)"
 
 /* Want to use SSL */
 Call SetConnOpt "HWTH_OPT_USE_SSL", "HWTH_SSL_USE"
+
+/* Force use of TLS 1.2 */
+Call SetConnOpt "HWTH_OPT_SSLVERSION" "HWTH_SSLVERSION_TLSv12"
+
+/* Specify the list of acceptable cipher suites */
+Call SetConnOpt "HWTH_OPT_SSLCIPHERSPECS" "tlsCipherSuiteList"
 
 /* Use a SAF key ring */
 Call SetConnOpt "HWTH_OPT_SSLKEYTYPE", "HWTH_SSLKEYTYPE_KEYRINGNAME"
