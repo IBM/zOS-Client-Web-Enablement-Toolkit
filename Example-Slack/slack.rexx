@@ -316,14 +316,14 @@ Do i = 1 To Messages.0
     /* Check for good HTTP response */
     If HttpStatusCode \= 200 Then Do
 
-    /* Dump out the HTTP response code */
-    Say "HTTP status" HttpStatusCode
+        /* Dump out the HTTP response code */
+        Say "HTTP status" HttpStatusCode
 
-    /* Dump out the HTTP reason code */
-    Say "HTTP reason" HttpReasonCode
+        /* Dump out the HTTP reason code */
+        Say "HTTP reason" HttpReasonCode
 
-    /* Dump out the response body */
-    Say "Response" ResponseBody
+        /* Dump out the response body */
+        Say "Response" ResponseBody
 
     End
 
