@@ -252,14 +252,14 @@ Do i = 1 To Messages.0
 
     /* Setup list of headers */
     sList = 0
-    String = 'Content-type: application/json'
+    headerContentType = 'Content-type: application/json'
 
     Address hwthttp "hwthslst",
                     "ReturnCode",
                     "ReqHandle",
                     "HWTH_SLST_NEW",
                     "sList",
-                    "String",
+                    "headerContentType",
                     "DiagArea."
 
     If ReturnCode \= 0 Then Call ShowError "hwthslst (new)"
@@ -332,7 +332,7 @@ Do i = 1 To Messages.0
                     "ReqHandle",
                     "HWTH_SLST_FREE",
                     "sList",
-                    "String",
+                    "headerContentType",
                     "DiagArea."
 
     If ReturnCode \= 0 Then Call ShowError "hwthslst (free)"
