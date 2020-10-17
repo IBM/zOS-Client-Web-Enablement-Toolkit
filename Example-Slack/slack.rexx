@@ -131,9 +131,7 @@ Address TSO "FREE FILE(OAUTH)"
  */
 
 /* Initialise some HWT constants */
-Address HWTHTTP "hwtconst",
-                "ReturnCode",
-                "DiagArea."
+Address hwthttp "hwtconst" "ReturnCode" "DiagArea."
 
 If ReturnCode \= 0 Then Call ShowError "hwtconst"
 
@@ -144,11 +142,8 @@ If ReturnCode \= 0 Then Call ShowError "hwtconst"
 
 /* Tell HWT we are creating a connection handle */
 HandleType = HWTH_HANDLETYPE_CONNECTION
-Address HWTHTTP "hwthinit",
-                "ReturnCode",
-                "HandleType",
-                "ConnectHandle",
-                "DiagArea."
+Address hwthttp "hwthinit" "ReturnCode" ,
+                "HandleType" "ConnectHandle" "DiagArea."
 
 If ReturnCode \= 0 Then Call ShowError "hwthinit (connection)"
 
@@ -187,10 +182,7 @@ Call SetConnOpt "HWTH_OPT_RCVTIMEOUTVAL", 10
 
 
 /* Perform the connect */
-Address HWTHTTP "hwthconn",
-                "ReturnCode",
-                "ConnectHandle",
-                "DiagArea."
+Address hwthttp "hwthconn" "ReturnCode" "ConnectHandle" "DiagArea."
 
 If ReturnCode \= 0 Then Call ShowError "hwthconn"
 
@@ -237,11 +229,8 @@ Do i = 1 To Messages.0
 
     /* Initialise the request */
     HandleType = HWTH_HANDLETYPE_HTTPREQUEST
-    Address HWTHTTP "hwthinit",
-                    "ReturnCode",
-                    "HandleType",
-                    "ReqHandle",
-                    "DiagArea."
+    Address hwthttp "hwthinit" "ReturnCode" ,
+                    "HandleType" "ReqHandle" "DiagArea."
 
     If ReturnCode \= 0 Then Call ShowError "hwthinit (request)"
 
@@ -254,13 +243,9 @@ Do i = 1 To Messages.0
     sList = 0
     headerContentType = 'Content-type: application/json'
 
-    Address hwthttp "hwthslst",
-                    "ReturnCode",
-                    "ReqHandle",
-                    "HWTH_SLST_NEW",
-                    "sList",
-                    "headerContentType",
-                    "DiagArea."
+    Address hwthttp "hwthslst" "ReturnCode" ,
+                    "ReqHandle" "HWTH_SLST_NEW" "sList" ,
+                    "headerContentType" "DiagArea."
 
     If ReturnCode \= 0 Then Call ShowError "hwthslst (new)"
 
@@ -289,26 +274,22 @@ Do i = 1 To Messages.0
     */
 
     /* Use the request body we created earlier */
-    Address HWTHTTP "hwthset" "ReturnCode" "ReqHandle" ,
+    Address hwthttp "hwthset" "ReturnCode" "ReqHandle" ,
             "HWTH_OPT_REQUESTBODY" "requestData" "DiagArea."
     If ReturnCode \= 0 Then
         Call ShowError "hwthset HWTH_OPT_REQUESTBODY"
 
     /* Grab the response data into here */
-    Address HWTHTTP "hwthset" "ReturnCode" "ReqHandle" ,
+    Address hwthttp "hwthset" "ReturnCode" "ReqHandle" ,
             "HWTH_OPT_RESPONSEBODY_USERDATA" "ResponseBody" "DiagArea."
     If ReturnCode \= 0 Then
         Call ShowError "hwthset HWTH_OPT_RESPONSEBODY_USERDATA"
 
 
     /* Perform the request */
-    Address hwthttp "hwthrqst",
-                    "ReturnCode",
-                    "ConnectHandle",
-                    "ReqHandle",
-                    "HttpStatusCode",
-                    "HttpReasonCode",
-                    "DiagArea."
+    Address hwthttp "hwthrqst" "ReturnCode" ,
+                    "ConnectHandle" "ReqHandle" ,
+                    "HttpStatusCode" "HttpReasonCode" "DiagArea."
 
     If ReturnCode \= 0 Then Call ShowError "hwthrqst"
 
@@ -327,21 +308,15 @@ Do i = 1 To Messages.0
     End
 
     /* Free the request headers */
-    Address hwthttp "hwthslst",
-                    "ReturnCode",
-                    "ReqHandle",
-                    "HWTH_SLST_FREE",
-                    "sList",
-                    "headerContentType",
-                    "DiagArea."
+    Address hwthttp "hwthslst" "ReturnCode" ,
+                    "ReqHandle" "HWTH_SLST_FREE" "sList" ,
+                    "headerContentType" "DiagArea."
 
     If ReturnCode \= 0 Then Call ShowError "hwthslst (free)"
 
     /* Reset the request for next use */
-    Address hwthttp "hwthrset",
-                    "ReturnCode",
-                    "ReqHandle",
-                    "DiagArea."
+    Address hwthttp "hwthrset" "ReturnCode" ,
+                    "ReqHandle" "DiagArea."
 
     If ReturnCode \= 0 Then Call ShowError "hwthrset (free)"
 
@@ -368,12 +343,8 @@ ReturnCode = -1
 DiagArea. = ''
 
 /* Perform the call */
-Address HWTHTTP "hwthset",
-                "ReturnCode",
-                "ConnectHandle",
-                "@optName",
-                "@optValue",
-                "DiagArea."
+Address hwthttp "hwthset" "ReturnCode" "ConnectHandle" ,
+                "@optName" "@optValue" "DiagArea."
 
 /* Check for good return */
 If ReturnCode \= 0 Then Call ShowError "hwthset (conn) " || @optName
@@ -399,12 +370,8 @@ ReturnCode = -1
 DiagArea. = ''
 
 /* Perform the call */
-Address HWTHTTP "hwthset",
-                "ReturnCode",
-                "ReqHandle",
-                "@optName",
-                "@optValue",
-                "DiagArea."
+Address hwthttp "hwthset" "ReturnCode" "ReqHandle" ,
+                "@optName" "@optValue" "DiagArea."
 
 /* Check for good return */
 If ReturnCode \= 0 Then Call ShowError "hwthset (req) " || @optName
