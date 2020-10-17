@@ -35,7 +35,7 @@ Download the certificate in PEM format.
 
 ### Copy the certificate to the z/OS USS environment
 
-FTP the PEM file from your workstation to the z/OS USS environment using **ascii mode** transfer.
+FTP the PEM file from your workstation to the z/OS USS environment using **ASCII mode** transfer.
 
 To validate the certificate in the z/OS USS environment, the following command will display the
 certificate details.
