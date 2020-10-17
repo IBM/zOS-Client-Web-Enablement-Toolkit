@@ -77,13 +77,45 @@ tlsCipherSuiteList = 'C02F' || 'C027' || 'C030' || ,
 /* 003C = TLS_RSA_WITH_AES_128_CBC_SHA256 */
 
 /*
+ * Specify where we can find the Certificate Authority (CA)
+ * certificates when we are connecting to Slack.
+ *
+ * keyStore = 'SAF'  : Use SAF keyrings
+ * keyStore = 'FILE' : Use key database files on zFS
+ */
+keyStore = 'SAF'
+
+/*
  * A key ring accessible by the user executing this Rexx script.
  * Only used to validate the SSL certificate provided by Slack.
  *
  * 'userid/keyring' or just 'keyring' for current user
+ *
+ * Only required when keyStore = 'SAF'
  */
 safKeyRing = 'SLACK'
 
+/*
+ * A key database file accessible on zFS by the user executing this
+ * Rexx script. Only used to validate the SSL certificate provided
+ * by Slack.
+ *
+ * Specify the full path to the key database file
+ *
+ * Only required when keyStore = 'FILE'
+ */
+keyDatabaseFile = '/u/user1/myKeyDb'
+
+/*
+ * The key stash file for the key database file referenced above.
+ * The file should be accessible on zFS by the user executing this
+ * Rexx script.
+ *
+ * Specify the full path to the key stash file.
+ *
+ * Only required when keyStore = 'FILE'
+ */
+keyStashFile = '/u/user1/myKeyDb.sth'
 
 /*********************************************************************/
 /*                                                                   */
@@ -174,12 +206,34 @@ Call SetConnOpt "HWTH_OPT_SSLVERSION", "HWTH_SSLVERSION_TLSv12"
 /* Specify the list of acceptable cipher suites */
 Call SetConnOpt "HWTH_OPT_SSLCIPHERSPECS", tlsCipherSuiteList
 
-/* Use a SAF key ring */
-Call SetConnOpt "HWTH_OPT_SSLKEYTYPE", "HWTH_SSLKEYTYPE_KEYRINGNAME"
+/* Are we using SAF? */
+If keyStore = 'SAF' Then Do
 
-/* Use this key ring */
-Call SetConnOpt "HWTH_OPT_SSLKEY", safKeyRing
+    /* Use a SAF key ring */
+    Call SetConnOpt "HWTH_OPT_SSLKEYTYPE", ,
+                    "HWTH_SSLKEYTYPE_KEYRINGNAME"
 
+    /* Use this key ring */
+    Call SetConnOpt "HWTH_OPT_SSLKEY", safKeyRing
+
+End
+Else If keyStore = 'FILE' Then Do
+
+    /* Use a key database file */
+    Call SetConnOpt "HWTH_OPT_SSLKEYTYPE", ,
+                    "HWTH_SSLKEYTYPE_KEYDBFILE"
+
+    /* Use this database file */
+    Call SetConnOpt "HWTH_OPT_SSLKEY", keyDatabaseFile
+
+    /* Use this stash file */
+    Call SetConnOpt "HWTH_OPT_SSLKEYSTASHFILE", keyStashFile
+
+End
+Else Do
+    Say "keyStore (" || keyStore || ") should be one of SAF or FILE"
+    Exit 12
+End
 
 
 /* Perform the connect */
