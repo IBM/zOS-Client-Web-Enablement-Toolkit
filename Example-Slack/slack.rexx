@@ -157,7 +157,7 @@ If ReturnCode \= 0 Then Call ShowError "hwthinit (connection)"
  * Setup the connection options
  */
 
-/* Debug messages enabled */
+/* Uncomment to enable debug messages */
 /* Call SetConnOpt "HWTH_OPT_VERBOSE", "HWTH_VERBOSE_ON" */
 
 /* Want to use SSL */
