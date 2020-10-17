@@ -251,14 +251,13 @@ Do i = 1 To Messages.0
      */
 
     /* Setup list of headers */
-    Function = 'HWTH_SLST_NEW'
     sList = 0
     String = 'Content-type: application/json'
 
     Address hwthttp "hwthslst",
                     "ReturnCode",
                     "ReqHandle",
-                    "Function",
+                    "HWTH_SLST_NEW",
                     "sList",
                     "String",
                     "DiagArea."
@@ -328,11 +327,10 @@ Do i = 1 To Messages.0
     End
 
     /* Free the request headers */
-    Function = 'HWTH_SLST_FREE'
     Address hwthttp "hwthslst",
                     "ReturnCode",
                     "ReqHandle",
-                    "Function",
+                    "HWTH_SLST_FREE",
                     "sList",
                     "String",
                     "DiagArea."
