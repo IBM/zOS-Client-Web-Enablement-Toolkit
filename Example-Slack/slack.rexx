@@ -48,14 +48,6 @@ userName = 'My Rexx Slack bot'
 /* Server URI (just protocol and host really) */
 uri = 'https://hooks.slack.com'
 
-/*
- * A key ring accessible by the user executing this Rexx script.
- * Only used to validate the SSL certificate provided by Slack.
- *
- * 'userid/keyring' or just 'keyring' for current user
- */
-safKeyRing = 'SLACK'
-
 /* Name of data set containing the text to post */
 msgDataset = 'hlq.SLACK.MESSAGES'
 
@@ -83,6 +75,15 @@ tlsCipherSuiteList = 'C02F' || 'C027' || 'C030' || ,
 /* 009C = TLS_RSA_WITH_AES_128_GCM_SHA256 */
 /* 009D = TLS_RSA_WITH_AES_256_GCM_SHA384 */
 /* 003C = TLS_RSA_WITH_AES_128_CBC_SHA256 */
+
+/*
+ * A key ring accessible by the user executing this Rexx script.
+ * Only used to validate the SSL certificate provided by Slack.
+ *
+ * 'userid/keyring' or just 'keyring' for current user
+ */
+safKeyRing = 'SLACK'
+
 
 /*********************************************************************/
 /*                                                                   */
@@ -155,6 +156,15 @@ If ReturnCode \= 0 Then Call ShowError "hwthinit (connection)"
 /* Uncomment to enable debug messages */
 /* Call SetConnOpt "HWTH_OPT_VERBOSE", "HWTH_VERBOSE_ON" */
 
+/* Connection URI (hostname really) */
+Call SetConnOpt "HWTH_OPT_URI", uri
+
+/* Timeout on the send after 10 seconds */
+Call SetConnOpt "HWTH_OPT_SNDTIMEOUTVAL", 10
+
+/* Timeout on the receive after 10 seconds */
+Call SetConnOpt "HWTH_OPT_RCVTIMEOUTVAL", 10
+
 /* Want to use SSL */
 Call SetConnOpt "HWTH_OPT_USE_SSL", "HWTH_SSL_USE"
 
@@ -169,15 +179,6 @@ Call SetConnOpt "HWTH_OPT_SSLKEYTYPE", "HWTH_SSLKEYTYPE_KEYRINGNAME"
 
 /* Use this key ring */
 Call SetConnOpt "HWTH_OPT_SSLKEY", safKeyRing
-
-/* Connection URI (hostname really) */
-Call SetConnOpt "HWTH_OPT_URI", uri
-
-/* Timeout on the send after 10 seconds */
-Call SetConnOpt "HWTH_OPT_SNDTIMEOUTVAL", 10
-
-/* Timeout on the receive after 10 seconds */
-Call SetConnOpt "HWTH_OPT_RCVTIMEOUTVAL", 10
 
 
 
