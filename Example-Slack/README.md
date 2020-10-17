@@ -39,7 +39,8 @@ This will provide you with an OAuth token which looks something like this:
 for your environment
 1. Store slack.jcl into hlq.SLACK.JCL and customize for your environment
 1. Store the OAuth token from the Slack prep step above in hlq.SLACK.OAUTH
-1. [Setup a SAF key ring](KeyRing.md) connected to the Slack CA's certificate
+1. Setup a [SAF key ring](KeyRing.md) connected to the Slack CA's certificate, or a
+[key database file](KeyDatabase.md) containing the Slack CA's certificate
 
 
 ## Invocation
