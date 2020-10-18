@@ -117,6 +117,23 @@ keyDatabaseFile = '/u/user1/myKeyDb'
  */
 keyStashFile = '/u/user1/myKeyDb.sth'
 
+/*
+ * If set to a non-empty string, then SSL tracing will be enabled
+ * to allow the debug of TLS connection problems.
+ *
+ * Specify the full path of a binary trace output file.
+ *
+ * Example:
+ *    sslTraceFile = '/u/user1/ssltrace.bin'
+ *
+ * To format the resulting trace file, use the gsktrace utility. It
+ * is recommended the utility output is redirected to a file.
+ *
+ * Example:
+ *    gsktrace ssltrace.bin > ssltrace.txt
+ */
+sslTraceFile = ''
+
 /*********************************************************************/
 /*                                                                   */
 /* Main application starts here.                                     */
@@ -199,6 +216,14 @@ Call SetConnOpt "HWTH_OPT_RCVTIMEOUTVAL", 10
 
 /* Want to use SSL */
 Call SetConnOpt "HWTH_OPT_USE_SSL", "HWTH_SSL_USE"
+
+/* Should we enable SSL tracing? */
+If sslTraceFile \= '' Then Do
+
+    /* Specify the output trace file */
+    Call SetConnOpt "HWTH_OPT_SSLTRACE", sslTraceFile
+
+End
 
 /* Force use of TLS 1.2 */
 Call SetConnOpt "HWTH_OPT_SSLVERSION", "HWTH_SSLVERSION_TLSv12"
