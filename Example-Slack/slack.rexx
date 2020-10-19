@@ -48,14 +48,6 @@ userName = 'My Rexx Slack bot'
 /* Server URI (just protocol and host really) */
 uri = 'https://hooks.slack.com'
 
-/*
- * A key ring accessible by the user executing this Rexx script.
- * Only used to validate the SSL certificate provided by Slack.
- *
- * 'userid/keyring' or just 'keyring' for current user
- */
-safKeyRing = 'SLACK'
-
 /* Name of data set containing the text to post */
 msgDataset = 'hlq.SLACK.MESSAGES'
 
@@ -83,6 +75,47 @@ tlsCipherSuiteList = 'C02F' || 'C027' || 'C030' || ,
 /* 009C = TLS_RSA_WITH_AES_128_GCM_SHA256 */
 /* 009D = TLS_RSA_WITH_AES_256_GCM_SHA384 */
 /* 003C = TLS_RSA_WITH_AES_128_CBC_SHA256 */
+
+/*
+ * Specify where we can find the Certificate Authority (CA)
+ * certificates when we are connecting to Slack.
+ *
+ * keyStore = 'SAF'  : Use SAF keyrings
+ * keyStore = 'FILE' : Use key database files on zFS
+ */
+keyStore = 'SAF'
+
+/*
+ * A key ring accessible by the user executing this Rexx script.
+ * Only used to validate the SSL certificate provided by Slack.
+ *
+ * 'userid/keyring' or just 'keyring' for current user
+ *
+ * Only required when keyStore = 'SAF'
+ */
+safKeyRing = 'SLACK'
+
+/*
+ * A key database file accessible on zFS by the user executing this
+ * Rexx script. Only used to validate the SSL certificate provided
+ * by Slack.
+ *
+ * Specify the full path to the key database file
+ *
+ * Only required when keyStore = 'FILE'
+ */
+keyDatabaseFile = '/u/user1/myKeyDb'
+
+/*
+ * The key stash file for the key database file referenced above.
+ * The file should be accessible on zFS by the user executing this
+ * Rexx script.
+ *
+ * Specify the full path to the key stash file.
+ *
+ * Only required when keyStore = 'FILE'
+ */
+keyStashFile = '/u/user1/myKeyDb.sth'
 
 /*********************************************************************/
 /*                                                                   */
@@ -155,21 +188,6 @@ If ReturnCode \= 0 Then Call ShowError "hwthinit (connection)"
 /* Uncomment to enable debug messages */
 /* Call SetConnOpt "HWTH_OPT_VERBOSE", "HWTH_VERBOSE_ON" */
 
-/* Want to use SSL */
-Call SetConnOpt "HWTH_OPT_USE_SSL", "HWTH_SSL_USE"
-
-/* Force use of TLS 1.2 */
-Call SetConnOpt "HWTH_OPT_SSLVERSION", "HWTH_SSLVERSION_TLSv12"
-
-/* Specify the list of acceptable cipher suites */
-Call SetConnOpt "HWTH_OPT_SSLCIPHERSPECS", tlsCipherSuiteList
-
-/* Use a SAF key ring */
-Call SetConnOpt "HWTH_OPT_SSLKEYTYPE", "HWTH_SSLKEYTYPE_KEYRINGNAME"
-
-/* Use this key ring */
-Call SetConnOpt "HWTH_OPT_SSLKEY", safKeyRing
-
 /* Connection URI (hostname really) */
 Call SetConnOpt "HWTH_OPT_URI", uri
 
@@ -179,6 +197,43 @@ Call SetConnOpt "HWTH_OPT_SNDTIMEOUTVAL", 10
 /* Timeout on the receive after 10 seconds */
 Call SetConnOpt "HWTH_OPT_RCVTIMEOUTVAL", 10
 
+/* Want to use SSL */
+Call SetConnOpt "HWTH_OPT_USE_SSL", "HWTH_SSL_USE"
+
+/* Force use of TLS 1.2 */
+Call SetConnOpt "HWTH_OPT_SSLVERSION", "HWTH_SSLVERSION_TLSv12"
+
+/* Specify the list of acceptable cipher suites */
+Call SetConnOpt "HWTH_OPT_SSLCIPHERSPECS", tlsCipherSuiteList
+
+/* Are we using SAF? */
+If keyStore = 'SAF' Then Do
+
+    /* Use a SAF key ring */
+    Call SetConnOpt "HWTH_OPT_SSLKEYTYPE", ,
+                    "HWTH_SSLKEYTYPE_KEYRINGNAME"
+
+    /* Use this key ring */
+    Call SetConnOpt "HWTH_OPT_SSLKEY", safKeyRing
+
+End
+Else If keyStore = 'FILE' Then Do
+
+    /* Use a key database file */
+    Call SetConnOpt "HWTH_OPT_SSLKEYTYPE", ,
+                    "HWTH_SSLKEYTYPE_KEYDBFILE"
+
+    /* Use this database file */
+    Call SetConnOpt "HWTH_OPT_SSLKEY", keyDatabaseFile
+
+    /* Use this stash file */
+    Call SetConnOpt "HWTH_OPT_SSLKEYSTASHFILE", keyStashFile
+
+End
+Else Do
+    Say "keyStore (" || keyStore || ") should be one of SAF or FILE"
+    Exit 12
+End
 
 
 /* Perform the connect */
