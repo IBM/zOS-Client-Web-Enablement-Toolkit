@@ -158,31 +158,31 @@ If ReturnCode \= 0 Then Call ShowError "hwthinit (connection)"
  */
 
 /* Debug messages enabled */
-/* Call SetConnOpt "HWTH_OPT_VERBOSE" "HWTH_VERBOSE_ON" */
+/* Call SetConnOpt "HWTH_OPT_VERBOSE", "HWTH_VERBOSE_ON" */
 
 /* Want to use SSL */
 Call SetConnOpt "HWTH_OPT_USE_SSL", "HWTH_SSL_USE"
 
 /* Force use of TLS 1.2 */
-Call SetConnOpt "HWTH_OPT_SSLVERSION" "HWTH_SSLVERSION_TLSv12"
+Call SetConnOpt "HWTH_OPT_SSLVERSION", "HWTH_SSLVERSION_TLSv12"
 
 /* Specify the list of acceptable cipher suites */
-Call SetConnOpt "HWTH_OPT_SSLCIPHERSPECS" "tlsCipherSuiteList"
+Call SetConnOpt "HWTH_OPT_SSLCIPHERSPECS", tlsCipherSuiteList
 
 /* Use a SAF key ring */
 Call SetConnOpt "HWTH_OPT_SSLKEYTYPE", "HWTH_SSLKEYTYPE_KEYRINGNAME"
 
 /* Use this key ring */
-Call SetConnOpt "HWTH_OPT_SSLKEY", "safKeyRing"
+Call SetConnOpt "HWTH_OPT_SSLKEY", safKeyRing
 
 /* Connection URI (hostname really) */
-Call SetConnOpt "HWTH_OPT_URI", "uri"
+Call SetConnOpt "HWTH_OPT_URI", uri
 
 /* Timeout on the send after 10 seconds */
-Call SetConnOpt "HWTH_OPT_SNDTIMEOUTVAL", "10"
+Call SetConnOpt "HWTH_OPT_SNDTIMEOUTVAL", 10
 
 /* Timeout on the receive after 10 seconds */
-Call SetConnOpt "HWTH_OPT_RCVTIMEOUTVAL", "10"
+Call SetConnOpt "HWTH_OPT_RCVTIMEOUTVAL", 10
 
 
 
@@ -269,13 +269,10 @@ Do i = 1 To Messages.0
     Call SetReqOpt "HWTH_OPT_REQUESTMETHOD", "HWTH_HTTP_REQUEST_POST"
 
     /* Request path */
-    Call SetReqOpt "HWTH_OPT_URI", "requestPath"
+    Call SetReqOpt "HWTH_OPT_URI", requestPath
 
     /* Use the HTTP headers list we have created */
-    Call SetReqOpt "HWTH_OPT_HTTPHEADERS", "sList"
-
-    /* Use the request body we created earlier */
-    Call SetReqOpt "HWTH_OPT_REQUESTBODY", "requestData"
+    Call SetReqOpt "HWTH_OPT_HTTPHEADERS", sList
 
     /* Translate to ASCII outbound please */
     Call SetReqOpt "HWTH_OPT_TRANSLATE_REQBODY", ,
@@ -285,8 +282,24 @@ Do i = 1 To Messages.0
     Call SetReqOpt "HWTH_OPT_TRANSLATE_RESPBODY", ,
                    "HWTH_XLATE_RESPBODY_A2E"
 
+    /*
+      The following options take a reference to the internal Rexx
+      string buffer, but Rexx does not allow us to pass arguments by
+      references and we can therefore not use the handy SetReqOpt
+      subroutine used above.
+    */
+
+    /* Use the request body we created earlier */
+    Address HWTHTTP "hwthset" "ReturnCode" "ReqHandle" ,
+            "HWTH_OPT_REQUESTBODY" "requestData" "DiagArea."
+    If ReturnCode \= 0 Then
+        Call ShowError "hwthset HWTH_OPT_REQUESTBODY"
+
     /* Grab the response data into here */
-    Call SetReqOpt "HWTH_OPT_RESPONSEBODY_USERDATA", "ResponseBody"
+    Address HWTHTTP "hwthset" "ReturnCode" "ReqHandle" ,
+            "HWTH_OPT_RESPONSEBODY_USERDATA" "ResponseBody" "DiagArea."
+    If ReturnCode \= 0 Then
+        Call ShowError "hwthset HWTH_OPT_RESPONSEBODY_USERDATA"
 
 
     /* Perform the request */
@@ -360,12 +373,12 @@ DiagArea. = ''
 Address HWTHTTP "hwthset",
                 "ReturnCode",
                 "ConnectHandle",
-                @optName,
-                @optValue,
+                "@optName",
+                "@optValue",
                 "DiagArea."
 
 /* Check for good return */
-If ReturnCode \= 0 Then Call ShowError "hwthset " || @optName
+If ReturnCode \= 0 Then Call ShowError "hwthset (conn) " || @optName
 
 /* All complete */
 Return
@@ -391,12 +404,12 @@ DiagArea. = ''
 Address HWTHTTP "hwthset",
                 "ReturnCode",
                 "ReqHandle",
-                @optName,
-                @optValue,
+                "@optName",
+                "@optValue",
                 "DiagArea."
 
 /* Check for good return */
-If ReturnCode \= 0 Then Call ShowError "hwthset" || @optName
+If ReturnCode \= 0 Then Call ShowError "hwthset (req) " || @optName
 
 /* All complete */
 Return
