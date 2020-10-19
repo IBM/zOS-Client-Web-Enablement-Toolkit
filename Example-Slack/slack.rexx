@@ -3,7 +3,7 @@
 /*********************************************************************/
 /* Beginning of Copyright and License                                */
 /*                                                                   */
-/* Copyright 2015, 2019 IBM Corp.                                    */
+/* Copyright 2015, 2020 IBM Corp.                                    */
 /*                                                                   */
 /* Licensed under the Apache License, Version 2.0 (the "License");   */
 /* you may not use this file except in compliance with the License.  */
@@ -414,8 +414,13 @@ ShowError: Procedure Expose ReturnCode DiagArea.
 /* Pull in the function name and diagnostic data */
 @fn = Arg(1)
 
+/* Keep track of the sign of the return code (D2X must be 0 or +ve) */
+If ReturnCode >= 0 Then SignReturnCode = '' ; Else SignReturnCode = '-'
+
 /* Say what went wrong */
-Say @fn || ": RC " ReturnCode || "='" || D2X(ReturnCode) || "'x"
+Say @fn || ,
+    ": RC " || ReturnCode || ,
+    "=" || SignReturnCode || "'" || D2X(ABS(ReturnCode)) || "'x"
 
 /* Dump out the error */
 Say "Service =" DiagArea.HWTH_Service
