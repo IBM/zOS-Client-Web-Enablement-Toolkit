@@ -2260,7 +2260,7 @@ int toolkitSetOption( HWTH_RETURNCODE_TYPE *rcPtr,
 	 const char *PORT_DELIM = ":";
 
 	 /************************************************
-	  * Sanity-check the uri and make a mutable copy
+	  * Validate the uri and make a mutable copy
 	  ************************************************/
 	 if ( uri == NULL )
 		 return -1;
