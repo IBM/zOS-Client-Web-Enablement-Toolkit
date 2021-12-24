@@ -3,7 +3,7 @@
 /*********************************************************************/
 /* Beginning of Copyright and License                                */
 /*                                                                   */
-/* Copyright 2015, 2020 IBM Corp.                                    */
+/* Copyright 2015, 2021 IBM Corp.                                    */
 /*                                                                   */
 /* Licensed under the Apache License, Version 2.0 (the "License");   */
 /* you may not use this file except in compliance with the License.  */
@@ -401,6 +401,30 @@ Do i = 1 To Messages.0
     If ReturnCode \= 0 Then Call ShowError "hwthrset (free)"
 
 End /* End of Messages.i loop */
+
+
+/*
+ * Processing of messages complete.
+ * Now clean up the various handles we have open.
+ */
+
+/* Close the connection to Slack */
+Address hwthttp "hwthdisc" "ReturnCode" "ConnectHandle" "DiagArea."
+
+If ReturnCode \= 0 Then Call ShowError "hwthdisc"
+
+/* Free the work area associated with the request */
+Address hwthttp "hwthterm" "ReturnCode" "ReqHandle" ,
+                "HWTH_NOFORCE" "DiagArea."
+
+If ReturnCode \= 0 Then Call ShowError "hwthterm (request)"
+
+/* Free the work area associated with the connection */
+Address hwthttp "hwthterm" "ReturnCode" "ConnectHandle" ,
+                "HWTH_NOFORCE" "DiagArea."
+
+If ReturnCode \= 0 Then Call ShowError "hwthterm (connection)"
+
 
 /* All complete */
 Exit 0
