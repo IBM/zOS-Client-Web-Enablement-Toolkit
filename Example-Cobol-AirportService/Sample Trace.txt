@@ -14,8 +14,8 @@ t-Entry: sendrqst
 t-Entry: sendrqstImpl
 t-Entry: appendRequestLine
 t: No proxy is being used for the request
-ÝHWTHCKST¨ (no request cookies specified)
-ÝHWTHCKST¨ getCookieHeader() - No applicable cookies found
+[HWTHCKST] (no request cookies specified)
+[HWTHCKST] getCookieHeader() - No applicable cookies found
 t: No applicable cookies found
 t: * * * * * HTTP REQUEST HEADERS * * * * *
 t: GET /api/ap_info.json?iata=OMA HTTP/1.1

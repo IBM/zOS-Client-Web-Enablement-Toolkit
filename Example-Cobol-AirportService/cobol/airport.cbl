@@ -1353,7 +1353,7 @@
            *> Establish addressability to the airport data structure
            Set address of resp-body-data to resp-body-data-ptr.
 
-           *> Perform a sanity check on the airport-info data.
+           *> Perform an eyecatcher check on the airport-info data.
            If resp-body-data-eye not equal "AIRPORT" then
              display "  Eyecatcher check failed for airport-info"
              exit program

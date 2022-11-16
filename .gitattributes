@@ -1,0 +1,10 @@
+# These files are text and should be normalized (convert crlf to lf)
+*                         text=auto       git-encoding=iso8859-1 working-tree-encoding=iso8859-1 zos-working-tree-encoding=ibm-1047
+*.sh                      text eol=lf     git-encoding=iso8859-1 working-tree-encoding=iso8859-1 zos-working-tree-encoding=ibm-1047
+# Everything in image folder is binary and should not be treated as text
+*.jpg                     binary diff=hex git-encoding=utf-8     working-tree-encoding=utf-8     zos-working-tree-encoding=utf-8
+*.png                     binary diff=hex git-encoding=utf-8     working-tree-encoding=utf-8     zos-working-tree-encoding=utf-8
+
+# encode selected files as ascii 
+.gitattributes            text=auto       git-encoding=iso8859-1 working-tree-encoding=iso8859-1 zos-working-tree-encoding=iso8859-1
+.gitignore                text=auto       git-encoding=iso8859-1 working-tree-encoding=iso8859-1 zos-working-tree-encoding=iso8859-1
