@@ -71,7 +71,7 @@ The sequential data set must adhere to the following recommended attributes:
   - *state* is the 2-letter state abbreviation
   - *country* is the 2-letter country abbreviation
   - *publickey* is the Public Key you saved when you signed up for Geo Services
-  - *–v* is an optional parameter that will turn on verbose output, the output is directed to the data set specified by **traceDataSetName** variable inside exec
+  - *-v* is an optional parameter that will turn on verbose output, the output is directed to the data set specified by **traceDataSetName** variable inside exec
 
 **sample invocation in TSO:**
  ```

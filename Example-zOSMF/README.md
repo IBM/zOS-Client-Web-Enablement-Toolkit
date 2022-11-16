@@ -35,7 +35,7 @@ This sample requires the following
     password = yyyyyyy
     ```
 
-- Update `example.dataset(HLTHCHK)` with the location of your `HLTHCK` job. Don’t remove any of the quotes or you will likely get a REXX syntax error.  
+- Update `example.dataset(HLTHCHK)` with the location of your `HLTHCK` job. Don't remove any of the quotes or you will likely get a REXX syntax error.  
 
 - Next, update the location of a zFS file where the trace output will be directed to. This samples is setup to generate verbose output, [`HWTH_OPT_VERBOSE`](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/ieac1-cwe-http-options.htm), and direct it to a location pointed to by the `MYTRACE` DD name, [`HWTH_OPT_VERBOSE_OUTPUT`](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.ieac100/ieac1-cwe-http-options.htm). The `MYTRACE` DD is defined at the bottom of the sample. Replace `/sharelab/sharxxx/sharxxx.trace` with your desired zFS location.
 
