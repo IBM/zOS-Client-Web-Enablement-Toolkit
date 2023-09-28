@@ -130,9 +130,9 @@ static const char *OPTION_TOOLKIT_TRACE = "-v";
 #define MEGABYTE  1024*1024
 #define EMIT_MSG_INTERVAL 50*MEGABYTE   /* for progress msgs */
 
-#define DS_LRECL 1024              /* TRSMAIN convention */
-char *DS_FORMAT = "FB";            /* TRSMAIN convention */
-char *DS_TYPE = "blocked";         /* TRSMAIN convention */
+#define DS_LRECL 1024              /* AMATERSE compatible */
+char *DS_FORMAT = "FB";            /* AMATERSE compatible */
+char *DS_TYPE = "record";          /* AMATERSE compatible */
 
 /****************************
  * constants for http status
