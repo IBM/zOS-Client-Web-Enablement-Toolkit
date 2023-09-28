@@ -27,7 +27,7 @@ where `-I` points to a location that contains the IBM-supplied C header `hwthic.
 
 ## Invocation
 ### Syntax:
-`hwtdload -f <from> -t <to> [-c <userId:password>] [-k <keyring> [-s <stashfile>]] [-v]`
+`hwtdload -f <from> -t <to> [-c <userId:password>] [-k <keyring> [-s <stashfile>]] [-v] [-x]`
 
 ### OPTIONS
 
@@ -49,6 +49,7 @@ where `-I` points to a location that contains the IBM-supplied C header `hwthic.
 <br>-k certificate *keystore*, a SAF *keyring* or a *keyring* created using the SystemSSL gskkyman utility
 <br>-s *stashfile*, password stashfile associated with the certificate keystore
 <br>-v *verbose*, turn on [**HWTH_OPT_VERBOSE** tracing option](https://www.ibm.com/docs/en/zos/2.5.0?topic=values-options-connections)
+<br>-x *translate text*, write to file or dataset as IBM-1047 encoded text rather than binary
 
 
 **sample output**

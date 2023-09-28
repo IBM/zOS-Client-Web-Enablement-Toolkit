@@ -98,6 +98,7 @@ static const char *OPTION_CRED          = "-c";
 static const char *OPTION_KEYRING       = "-k";
 static const char *OPTION_STASHFILE     = "-s";
 static const char *OPTION_TOOLKIT_TRACE = "-v";
+static const char *OPTION_XLATE         = "-x";
 
 /*******************************************************
  * Constants for file I/O.  Our streaming receive exit
@@ -111,8 +112,9 @@ static const char *OPTION_TOOLKIT_TRACE = "-v";
 #define FREAD_EOF    1
 #define FREAD_ERROR  2
 
-#define IOTYPE_DATASET 1
-#define IOTYPE_FILE    2
+#define IOTYPE_DATASET       1
+#define IOTYPE_FILE          2
+#define IOTYPE_TEXT          4
 
 #define ABEND_SHORTAGE_B37  2871     /* B37x system abend code */
 #define ABEND_SHORTAGE_D37  3383     /* D37x system abend code */
@@ -157,6 +159,7 @@ struct parmStruct {
     char sslKeyring[1+MAX_PATH_LEN];
     char sslStashfile[1+MAX_PATH_LEN];
     bool sslOption;
+    bool translate;
 };
 
 /***********************************************************
@@ -288,9 +291,11 @@ void finalizeResponseData( struct receiveUserData *pUserData );
 FILE *openSequentialDSForWrite( char *canonicalDsName,
         char *dsRecfm,
         char *dsType,
-        int   dsLrecl );
+        int   dsLrecl,
+        bool  textMode );
 
-FILE *openFileForWrite( char *filePath );
+FILE *openFileForWrite( char *filePath,
+        bool textMode );
 
 void writeToSequentialDataset( struct receiveUserData *pUserData,
         char *dataAddr,
@@ -396,6 +401,7 @@ int getDownloadParms( int argc,
     memset( pParms, 0, sizeof(struct parmStruct) );
     pParms->sslOption = false;
     pParms->traceToolkit = false;
+    pParms->translate = false;
 
     /*****************************************************
      * Skip the first arg (which will always be program
@@ -429,6 +435,11 @@ int getDownloadParms( int argc,
         }
         else if ( strcasecmp( nextOpt, OPTION_TOOLKIT_TRACE ) == 0 ) {
             pParms->traceToolkit = true;
+            i += 1;
+        }
+        else if ( strcasecmp( nextOpt, OPTION_XLATE ) == 0 ) {
+            pParms->translate = true;
+            pParms->ioType |= IOTYPE_TEXT;
             i += 1;
         }
         else {
@@ -532,6 +543,9 @@ int getDownloadParms( int argc,
     if ( pParms->traceToolkit )
         trace( "Toolkit Tracing is enabled" );
 
+    if ( pParms->translate )
+        trace( "Download will be translated to IBM-1047" );
+
     return ( parmErrors );
 
 }
@@ -556,14 +570,15 @@ void usage() {
             "<to file or dataset>" );
     trace( traceBuf );
     sprintf( traceBuf,
-            "\tOptional:\t%s %s %s %s %s %s %s",
+            "\tOptional:\t[%s %s] [%s %s [%s %s]] [%s] [%s]",
             OPTION_CRED,
             "<user:password>",
             OPTION_KEYRING,
             "<keyring>",
             OPTION_STASHFILE,
             "<stashfile>",
-            OPTION_TOOLKIT_TRACE );
+            OPTION_TOOLKIT_TRACE,
+            OPTION_XLATE );
     trace( traceBuf );
 
 }
@@ -770,6 +785,21 @@ int  setupRequest( HWTH_HANDLE_TYPE  *requestHandlePtr,
             return -1;
     } /* endif credential exists */
 
+    /****************************************************
+     * When user specified that they want to convert
+     * downloaded text into ibm-1047, set option to do so.
+     ***************************************************/
+    if ( parmsPtr->translate ) {
+        intOption = HWTH_XLATE_RESPBODY_A2E;
+        if ( toolkitSetOption( &rc,
+                requestHandlePtr,
+                HWTH_OPT_TRANSLATE_RESPBODY,
+                (void **)&intOptionPtr,
+                sizeof(intOption),
+                &diagArea ) )
+            return -1;
+    } /* endif translate to ibm-1047 */
+
     /***********************************************
      * Establish the streaming receive callback,
      * with its own userdata area (which we now
@@ -779,7 +809,7 @@ int  setupRequest( HWTH_HANDLE_TYPE  *requestHandlePtr,
     memset( &receiveData, 0, sizeof(receiveData) );
     strcpy( receiveData.eyecatcher, "USRDATA" );
     receiveData.ioType = parmsPtr->ioType;
-    if ( receiveData.ioType == IOTYPE_DATASET )
+    if ( (receiveData.ioType & IOTYPE_DATASET) == IOTYPE_DATASET )
         strcpy( receiveData.datasetName,
                 parmsPtr->fileOrDsname );
     else
@@ -1024,7 +1054,7 @@ void summarize( struct parmStruct *pParms,
                     downloadSize );
             trace( msgBuf );
 
-            if ( pRecvData->ioType == IOTYPE_DATASET ) {
+            if ( (pRecvData->ioType & IOTYPE_DATASET) == IOTYPE_DATASET ) {
                 if ( pRecvData->dsWriteAbendCode ) {
                     sprintf( msgBuf,
                             "An I/O abend (%X-%X) was detected",
@@ -1403,17 +1433,20 @@ int initReceive( struct receiveUserData *pUserData ) {
     } /* endif unable to obtain supplyList buffers */
     else
         pUserData->bufferListSize = NUM_BUFFERS;
+    
+    bool textMode = ((pUserData->ioType & IOTYPE_TEXT) == IOTYPE_TEXT);
 
     /*********************************************************
      * Open the designated file or dataset for binary write
      *********************************************************/
-    if ( pUserData->ioType == IOTYPE_DATASET )
+    if ( (pUserData->ioType & IOTYPE_DATASET) == IOTYPE_DATASET )
         pUserData->fp = openSequentialDSForWrite( pUserData->datasetName,
                 DS_FORMAT,
                 DS_TYPE,
-                (int)DS_LRECL );
+                (int)DS_LRECL,
+                textMode );
     else
-        pUserData->fp = openFileForWrite( pUserData->filePath );
+        pUserData->fp = openFileForWrite( pUserData->filePath, textMode );
 
     if ( pUserData->fp == NULL ) {
         termReceive( pUserData );
@@ -1598,7 +1631,8 @@ void surfaceToolkitDiag( HWTH_RETURNCODE_TYPE *rcPtr,
 FILE *openSequentialDSForWrite( char *canonicalDsName,
         char *dsRecfm,
         char *dsType,
-        int   dsLrecl ) {
+        int   dsLrecl,
+        bool  textMode ) {
     FILE *fp = NULL;
     char mode[80];
     fldata_t Fdt;
@@ -1638,11 +1672,27 @@ FILE *openSequentialDSForWrite( char *canonicalDsName,
             return( NULL );
         }
 
-        if ( snprintf( mode, sizeof(mode),
-                      "wb, recfm=%s, type=%s, lrecl=%d",
-                      dsRecfm, dsType, dsLrecl ) >= sizeof(mode) ) {
-            trace( "Dataset mode flags were truncated..." );
-            return( NULL );
+        /******************************************************************
+         * Going to open the dataset for writing with additional qualifiers.
+         * Dataset type, record format, and record length are provided,
+         * but dataset type=record cannot be used in combination with text
+         * mode and is therefore left off the option list.
+         ******************************************************************/
+        if (textMode) {
+            if ( snprintf( mode, sizeof(mode),
+                         "w, recfm=%s, lrecl=%d",
+                         dsRecfm, dsLrecl ) >= sizeof(mode) ) {
+                trace( "Dataset mode flags were truncated..." );
+                return( NULL );
+            }
+        }
+        else {
+            if ( snprintf( mode, sizeof(mode),
+                          "wb, recfm=%s, type=%s, lrecl=%d",
+                          dsRecfm, dsType, dsLrecl ) >= sizeof(mode) ) {
+                trace( "Dataset mode flags were truncated..." );
+                return( NULL );
+            }
         }
     } /* endif dataset exists */
 
@@ -1673,7 +1723,7 @@ FILE *openSequentialDSForWrite( char *canonicalDsName,
  * Function: openFileForWrite()
  *
  **************************************************************/
-FILE *openFileForWrite( char *filePath ) {
+FILE *openFileForWrite( char *filePath, bool textMode ) {
 
     FILE *fp = NULL;
     char msgBuf[16+MAX_PATH_LEN];
@@ -1683,7 +1733,7 @@ FILE *openFileForWrite( char *filePath ) {
      * Note that in the successful case, any
      * existing file is "reset" to empty...
      *******************************************/
-    fp = fopen( filePath, "wb" );
+    fp = fopen( filePath, textMode ? "w" : "wb" );
     if ( fp == NULL ) {
         snprintf( msgBuf, sizeof(msgBuf),
                 "fopen() failure: %d (%s)",
@@ -1724,7 +1774,7 @@ void consumeNextResponseData( HWTH_STREAM_DATADESC_TYPE *returnList,
      **********************************************/
     for ( i = 0; i < listSize; i++ ) {
         pDesc = &returnList[i];
-        if ( pUserData->ioType == IOTYPE_DATASET )
+        if ( (pUserData->ioType & IOTYPE_DATASET) == IOTYPE_DATASET )
             writeToSequentialDataset( pUserData,
                     pDesc->HWTH_dataAddr,
                     pDesc->HWTH_dataLength );
@@ -1892,7 +1942,7 @@ int setFileOrDsname( char *value, struct parmStruct *pParms ) {
      *******************************************/
     if ( *value == FS_DELIM &&
             strncmp( value, DS_DELIM, strlen( DS_DELIM ) ) != 0 ) {
-        pParms->ioType = IOTYPE_FILE;
+        pParms->ioType |= IOTYPE_FILE;
         strcpy( pFileOrDsname, value );
         return 0;
     }
@@ -1902,7 +1952,7 @@ int setFileOrDsname( char *value, struct parmStruct *pParms ) {
      * write a canonical version of it for
      * ease of subsequent open.
      *******************************************/
-    pParms->ioType = IOTYPE_DATASET;
+    pParms->ioType |= IOTYPE_DATASET;
     return setDataset( value, pFileOrDsname );
 }
 
