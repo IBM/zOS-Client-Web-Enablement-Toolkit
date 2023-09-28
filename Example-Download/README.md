@@ -11,6 +11,8 @@ or a sequential data set.
 It is intended to showcase how a native z/OS application can easily
 download content accessible via a REST API.
 
+This sample supports TLS version 1.3 by default.
+
 ## Prep work
 Compile and link `hwtdload.c`
 

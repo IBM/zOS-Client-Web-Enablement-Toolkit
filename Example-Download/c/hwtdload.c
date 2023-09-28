@@ -2011,22 +2011,21 @@ int setupSSL( HWTH_HANDLE_TYPE  *connectHandlePtr,
      * Indicate which version(s) of SSL/TLS we prefer.
      * If you have reason to believe that your web
      * server does not support this level, then change
-     * HWTH_SSLVERSION_TLSV12 to some alternative level
+     * HWTH_SSLVERSION_TLSV13 to some alternative level
      * indicated in <HWTHIC.h>
      * If you are unsure, you may wish to keep this and
      * simply add comparable code sections to enable
      * additional level(s) to increase the likelihood
      * of acceptance by your web server.
      **************************************************/
-    //HWTH_SSLVERSION_DEFAULT @GG
-    intOption = HWTH_SSLVERSION_TLSV12;
+    intOption = HWTH_SSLVERSION_TLSV13;
     if ( toolkitSetOption( &rc,
             connectHandlePtr,
             HWTH_OPT_SSLVERSION,
             (void **)&intOptionPtr,
             sizeof(intOption),
             &diagArea ) ) {
-        trace( "Unable to indicate HWTH_SSLVERSION_TLSV12" );
+        trace( "Unable to indicate HWTH_SSLVERSION_TLSV13" );
         return -1;
     }
 
