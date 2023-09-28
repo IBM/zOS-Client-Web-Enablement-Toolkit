@@ -432,7 +432,7 @@ int getDownloadParms( int argc,
             i += 1;
         }
         else {
-            sprintf( traceBuf,
+            snprintf( traceBuf, sizeof(traceBuf),
                     "Unrecognized option: %s",
                     nextOpt );
             trace( traceBuf );
@@ -457,7 +457,7 @@ int getDownloadParms( int argc,
     }
 
     if ( strlen(pParms->connectHost) ) {
-        sprintf( traceBuf,
+        snprintf( traceBuf, sizeof(traceBuf),
                 "Using host: %s",
                 pParms->connectHost );
         trace( traceBuf );
@@ -468,7 +468,7 @@ int getDownloadParms( int argc,
     }
 
     if ( strlen(pParms->requestUri) ) {
-        sprintf( traceBuf,
+        snprintf( traceBuf, sizeof(traceBuf),
                 "Using requestUri: %s",
                 pParms->requestUri );
         trace( traceBuf );
@@ -479,7 +479,7 @@ int getDownloadParms( int argc,
     }
 
     if ( strlen(pParms->fileOrDsname) ) {
-        sprintf( traceBuf,
+        snprintf( traceBuf, sizeof(traceBuf),
                 "Using file (or dataset): %s",
                 pParms->fileOrDsname );
         trace( traceBuf );
@@ -511,14 +511,14 @@ int getDownloadParms( int argc,
     }
 
     if ( strlen( pParms->sslKeyring ) ) {
-        sprintf( traceBuf,
+        snprintf( traceBuf, sizeof(traceBuf),
                 "Using keyring: %s",
                 pParms->sslKeyring );
         trace( traceBuf );
     }
 
     if ( strlen( pParms->sslStashfile ) ) {
-        sprintf( traceBuf,
+        snprintf( traceBuf, sizeof(traceBuf),
                 "Using stashfile: %s",
                 pParms->sslStashfile );
         trace( traceBuf );
@@ -578,7 +578,7 @@ int fatalError( char *where ) {
 
     char traceBuf[256];          /* accomodate big where string */
 
-    sprintf( traceBuf,
+    snprintf( traceBuf, sizeof(traceBuf),
             "\nFATAL ERROR encountered [%s]",
             where );
     trace( traceBuf );
@@ -1005,7 +1005,7 @@ void summarize( struct parmStruct *pParms,
          * Announce the successful download
          ************************************/
         if ( pRecvData->numBytesWritten == pRecvData->numBytesReceived ) {
-            sprintf( msgBuf,
+            snprintf( msgBuf, sizeof(msgBuf),
                     "File successfully downloaded to %s (%lld bytes)",
                     pParms->fileOrDsname,
                     pRecvData->numBytesWritten );
@@ -1562,13 +1562,13 @@ void surfaceToolkitDiag( HWTH_RETURNCODE_TYPE *rcPtr,
      ****************************************************************/
     pDiagRsnString = diagRsnString( diagAreaPtr->HWTH_reasonCode );
     if ( pDiagRsnString == NULL )
-        sprintf( traceBuf,
+        snprintf( traceBuf, sizeof(traceBuf),
                 "toolkit DIAG: Service[%d], Reason[%d], Desc[%s]",
                 diagAreaPtr->HWTH_service,
                 diagAreaPtr->HWTH_reasonCode,
                 diagAreaPtr->HWTH_reasonDesc );
     else
-        sprintf( traceBuf,
+        snprintf( traceBuf, sizeof(traceBuf),
                 "toolkit DIAG: Service[%d], Reason[%s], Desc[%s]",
                 diagAreaPtr->HWTH_service,
                 pDiagRsnString,
@@ -1606,7 +1606,7 @@ FILE *openSequentialDSForWrite( char *canonicalDsName,
     int fldataRc;
     char msgBuf[256];
 
-    sprintf( msgBuf,
+    snprintf( msgBuf, sizeof(msgBuf),
             "open sequential ds (%s)",
             canonicalDsName );
     trace( msgBuf );
@@ -1638,9 +1638,12 @@ FILE *openSequentialDSForWrite( char *canonicalDsName,
             return( NULL );
         }
 
-        sprintf( mode,
-                "wb, recfm=%s, type=%s, lrecl=%d",
-                dsRecfm, dsType, dsLrecl );
+        if ( snprintf( mode, sizeof(mode),
+                      "wb, recfm=%s, type=%s, lrecl=%d",
+                      dsRecfm, dsType, dsLrecl ) >= sizeof(mode) ) {
+            trace( "Dataset mode flags were truncated..." );
+            return( NULL );
+        }
     } /* endif dataset exists */
 
     sprintf( msgBuf,
@@ -1655,7 +1658,7 @@ FILE *openSequentialDSForWrite( char *canonicalDsName,
      *******************************************/
     fp = fopen( canonicalDsName, mode );
     if ( fp == NULL ) {
-        sprintf( msgBuf,
+        snprintf( msgBuf, sizeof(msgBuf),
                 "fopen() failure: %d (%s)",
                 errno,
                 strerror(errno) );
@@ -1682,7 +1685,7 @@ FILE *openFileForWrite( char *filePath ) {
      *******************************************/
     fp = fopen( filePath, "wb" );
     if ( fp == NULL ) {
-        sprintf( msgBuf,
+        snprintf( msgBuf, sizeof(msgBuf),
                 "fopen() failure: %d (%s)",
                 errno,
                 strerror(errno) );
@@ -1780,7 +1783,7 @@ void finalizeResponseData( struct receiveUserData *pUserData ) {
                     AMRC.__code.__abend.__syscode;
             pUserData->dsWriteAbendRsn =
                     AMRC.__code.__abend.__rc;
-            sprintf( msgBuf,
+            snprintf( msgBuf, sizeof(msgBuf),
                     "fwrite() failure, errno=%d (%s)",
                     errno,
                     strerror( errno ) );
@@ -2170,7 +2173,7 @@ void writeToSequentialDataset( struct receiveUserData *pUserData,
                             AMRC.__code.__abend.__syscode;
                     pUserData->dsWriteAbendRsn =
                             AMRC.__code.__abend.__rc;
-                    sprintf( msgBuf,
+                    snprintf( msgBuf, sizeof(msgBuf),
                             "fwrite() failure, errno=%d (%s)",
                             errno,
                             strerror( errno ) );
@@ -2220,7 +2223,7 @@ void writeToFile( struct receiveUserData *pUserData,
             dataLength,
             pUserData->fp ) < dataLength ) {
         pUserData->fwriteErrno = errno;
-        sprintf( msgBuf,
+        snprintf( msgBuf, sizeof(msgBuf),
                 "fwrite() failure, errno=%d (%s)",
                 errno,
                 strerror( errno ) );
@@ -2304,7 +2307,7 @@ int  parseUri( char *uri, struct parmStruct *pParms ) {
      **********************************************/
     path = strchr( cursor, '/' );
     if ( path == NULL ) {
-        strcpy( pParms->connectHost, host );
+        strncpy( pParms->connectHost, host, sizeof(pParms->connectHost) );
         return -1;
     }
 
@@ -2332,6 +2335,13 @@ int  parseUri( char *uri, struct parmStruct *pParms ) {
         pParms->connectPort = atoi( port );
         if ( pParms->connectPort <= 0 )
             return -1;
+    }
+
+    /***************************************************
+     * Fail if the hostname is longer than our buffer.
+     ***************************************************/
+    if ( strlen(host) > MAX_HOSTNAME_LEN ) {
+        return -1;
     }
 
     /**********************************************
