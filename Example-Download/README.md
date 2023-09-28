@@ -31,7 +31,7 @@ where `-I` points to a location that contains the IBM-supplied C header `hwthic.
 
 **required**
 <br>-f *from*, the URI *from* which the remote content should be downloaded
-    i.e.: `https://httpbin.org/bytes/10000`
+    i.e.: `https://codeload.github.com/IBM/IBM-Z-zOS/tar.gz/refs/tags/v1.0.0`
 <br>-t *to*, the location *to* which the downloaded content is to be stored
 * **for a zFS file**, specify absolute pathname
 * **for a data set**, specify name of a pre-allocated sequential data set,
@@ -51,13 +51,22 @@ where `-I` points to a location that contains the IBM-supplied C header `hwthic.
 
 **sample output**
 ```
-hwtdload -k keyring.kdb  -s keyring.sth -f https://example.org/bytes/10000 -t /u/HWT/test/content
+hwtdload -k keyring.kdb -s keyring.sth -f https://codeload.github.com/IBM/IBM-Z-zOS/tar.gz/refs/tags/v1.0.0 -t /u/user/path/to/content.tar.gz
 
 Using connect scheme: https
-Using host: example.org
-Using requestUri: /bytes/10000
-Using file (or dataset): /u/HWT/test/content
+Using host: codeload.github.com
+Using requestUri: /IBM/IBM-Z-zOS/tar.gz/refs/tags/v1.0.0
+Using file (or dataset): /u/user/path/to/content.tar.gz
 Using keyring: keyring.kdb
 Using stashfile: keyring.sth
-File successfully downloaded to /u/HWT/test/content (10000 bytes)
+[recvexit] 52568037 bytes received
+[recvexit] 105135589 bytes received
+[recvexit] 157702605 bytes received
+[recvexit] 210272132 bytes received
+[recvexit] 262839868 bytes received
+[recvexit] 315408585 bytes received
+[recvexit] 367976588 bytes received
+[recvexit] 420543180 bytes received
+[recvexit] 473111873 bytes received
+File successfully downloaded to /u/user/path/to/content.tar.gz (492236945 bytes)
 ```
